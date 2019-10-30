@@ -1,0 +1,62 @@
+<resources>
+
+    <string name="app_name">Wifi Valencia</string>
+
+    <!-- MENU -->
+    <string name="menu_settings">Ajustes</string>
+    <string name="menu_delete">Borrar WiFi</string>
+    <string name="menu_about">Acerca de</string>
+    <string name="menu_save">Guardar Wi-Fi</string>
+    <string name="menu_load">Cargar nuevas Wi-Fis</string>
+
+    <!-- ERROR -->
+    <string name="no_internet_connection">No hay conexión a Internet</string>
+    <string name="no_wifis_found">No se encontraron redes Wi-Fi</string>
+
+    <!-- INFO -->
+    <string name="number_wifis_loaded">WiFis cargadas: %d</string>
+    <string name="no_more_wifis">No hay nuevas redes. ¡Estás al día!</string>
+    <string name="deleteString">Borrar</string>
+    <string name="deletedString">¡Borrada!</string>
+    <string name="undoString">¿Deshacer?</string>
+
+    <!-- ACTIVITY NAMES -->
+    <string name="title_editor_activity">Editar WiFi</string>
+    <string name="title_mapa_activity">Mapa de WiFis</string>
+    <string name="title_streetview_activity">Vista de calle</string>
+    <string name="title_settings">Ajustes</string>
+    <string name="title_about_activity">Acerca de Wi-Fi VLC</string>
+
+    <!-- FRAGMENT DETAIL -->
+    <string name="fragment_detail_update_ok">WiFi actualizada</string>
+    <string name="fragment_detail_update_failed">Actualización fallida</string>
+    <string name="fragment_detail_delete_ok">WiFi borrada</string>
+    <string name="fragment_detail_delete_failed">Borrado fallido</string>
+    <string name="fragment_detail_changes_delete_confirmation">¿Estás segur@ que quieres borrar este red?</string>
+    <string name="fragment_detail_empty">Haz clic en la red para ver el detalle</string>
+    <string name="info_detail_hint">Tus comentarios sobre esta WiFi</string>
+
+    <!-- PERMISSION -->
+    <string name="permission_location">Necesito el permiso de ubicación para funcionar bien</string>
+
+    <!-- Strings sorting Preference -->
+    <string name="settings_sort_criteria">Criterio de ordenación</string>
+    <string name="settings_sort_by_name_label">Ordenar por nombre</string>
+    <string name="settings_sort_by_distance_label">Ordenar por distancia</string>
+    <string name="settings_sort_by_opinion_label">Ordenar por opinión</string>
+
+    <!-- ABOUT -->
+    <string name="about_info_name">WiFi Valencia</string>
+    <string name="about_info_text">Versión 1.1\n\nDatos ofrecidos por el Ayuntamiento de Valencia</string>
+
+    <!-- CONTENT DESCRIPTION STRINGS -->
+    <string name="cd_heart_image">Imagen de un corazón</string>
+    <string name="cd_about_image">Imagen del logo de la applicación. Una taza de wifi</string>
+    <string name="cd_vlc_image">Imagen de la ciudad de Valencia</string>
+    <string name="cd_logo_author">Imagen del logo del autor</string>
+    <string name="bn_info">Info</string>
+    <string name="bn_list">Lista</string>
+    <string name="bn_map">Mapa</string>
+
+
+</resources>

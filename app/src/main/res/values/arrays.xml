@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+
+    <string-array name="sortTypes">
+        <item>@string/settings_sort_by_name_label</item>
+        <item>@string/settings_sort_by_distance_label</item>
+        <item>@string/settings_sort_by_opinion_label</item>
+    </string-array>
+    <string-array name="sortTypesValues">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+    </string-array>
+</resources>

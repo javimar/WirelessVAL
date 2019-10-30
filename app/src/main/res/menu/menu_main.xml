@@ -1,0 +1,30 @@
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="eu.javimar.wirelessvlc.MainActivity">
+    <item
+        android:id="@+id/action_maps"
+        android:orderInCategory="100"
+        android:icon="@android:drawable/ic_menu_mapmode"
+        android:title="@string/menu_settings"
+        app:showAsAction="collapseActionView|ifRoom" />
+    <item
+        android:id="@+id/action_settings"
+        android:orderInCategory="200"
+        android:title="@string/menu_settings"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_load"
+        android:orderInCategory="210"
+        android:title="@string/menu_load"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_about"
+        android:title="@string/menu_about"
+        android:icon="@android:drawable/ic_dialog_info"
+        android:orderInCategory="500"
+        app:showAsAction="never" />
+
+</menu>
