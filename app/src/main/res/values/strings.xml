@@ -12,6 +12,7 @@
     <!-- ERROR -->
     <string name="no_internet_connection">There is no Internet connection</string>
     <string name="no_wifis_found">No wireless networks found</string>
+    <string name="err_loading_wifis">No wireless networks loaded. This is due to external server problems. Please try again later!</string>
 
     <!-- INFO -->
     <string name="number_wifis_loaded">Number of Wi-Fis loaded: %d</string>
@@ -31,7 +32,8 @@
     <string name="fragment_detail_update_ok">Wifi updated OK</string>
     <string name="fragment_detail_update_failed">Wifi update failed</string>
     <string name="fragment_detail_delete_ok">Wifi deleted OK</string>
-    <string name="fragment_detail_delete_failed">Wifi delete failed</string><string name="fragment_detail_changes_delete_confirmation">Are you sure you want to delete this wireless network?</string>
+    <string name="fragment_detail_delete_failed">Wifi delete failed</string>
+    <string name="fragment_detail_changes_delete_confirmation">Are you sure you want to delete this wireless network?</string>
     <string name="fragment_detail_empty">Click on a wireless network to view its detail</string>
     <string name="info_detail_hint">Your comments about this Wi-Fi</string>
 

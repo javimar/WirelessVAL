@@ -143,5 +143,31 @@ public final class HelperUtils
     {
         return ContextCompat.getColor(context, color);
     }
+
+    /**
+     * We are first scanning the file for invalid xml characters and ignoring them.
+     * Rest of the valid characters are getting added to a String object.
+     */
+    public static String stripNonValidXMLCharacters(String xmlFile)
+    {
+        StringBuilder out = new StringBuilder();
+        char current;
+
+        if (xmlFile == null || ("".equals(xmlFile))) return "";
+
+        for (int i = 0; i < xmlFile.length(); i++)
+        {
+            current = xmlFile.charAt(i);
+            if (current == 0xFFFD)
+            {
+                out.append('í');
+            }
+            else
+            {
+                out.append(current);
+            }
+        }
+        return out.toString();
+    }
 }
 

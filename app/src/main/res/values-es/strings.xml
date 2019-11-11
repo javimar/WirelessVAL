@@ -57,6 +57,7 @@
     <string name="bn_info">Info</string>
     <string name="bn_list">Lista</string>
     <string name="bn_map">Mapa</string>
+    <string name="err_loading_wifis">No se cargaron WIFIs debido a problemas con el servidor externo. Por favor, inténtalo más tarde.</string>
 
 
 </resources>
