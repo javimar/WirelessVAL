@@ -29,9 +29,6 @@
 
     <!-- FRAGMENT DETAIL -->
     <string name="fragment_detail_update_ok">WiFi actualizada</string>
-    <string name="fragment_detail_update_failed">Actualización fallida</string>
-    <string name="fragment_detail_delete_ok">WiFi borrada</string>
-    <string name="fragment_detail_delete_failed">Borrado fallido</string>
     <string name="fragment_detail_changes_delete_confirmation">¿Estás segur@ que quieres borrar este red?</string>
     <string name="fragment_detail_empty">Haz clic en la red para ver el detalle</string>
     <string name="info_detail_hint">Tus comentarios sobre esta WiFi</string>
@@ -54,10 +51,11 @@
     <string name="cd_about_image">Imagen del logo de la applicación. Una taza de wifi</string>
     <string name="cd_vlc_image">Imagen de la ciudad de Valencia</string>
     <string name="cd_logo_author">Imagen del logo del autor</string>
-    <string name="bn_info">Info</string>
-    <string name="bn_list">Lista</string>
-    <string name="bn_map">Mapa</string>
     <string name="err_loading_wifis">No se cargaron WIFIs debido a problemas con el servidor externo. Por favor, inténtalo más tarde.</string>
+    <string name="menu_map">Ver en Mapa</string>
+    <string name="menu_search">Buscar Redes</string>
+    <string name="search_hint">Buscar Redes</string>
+    <string name="wifiDeleted">Wifi borrada</string>
 
 
 </resources>

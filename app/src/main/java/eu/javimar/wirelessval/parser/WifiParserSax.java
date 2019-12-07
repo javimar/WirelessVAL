@@ -1,6 +1,6 @@
 package eu.javimar.wirelessval.parser;
 
-import android.content.ContentValues;
+
 import android.content.Context;
 import android.util.Log;
 
@@ -10,11 +10,13 @@ import java.util.List;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
+import eu.javimar.wirelessval.model.Wifi;
+
 
 public class WifiParserSax
 {
-    private InputStream mInputStream;
-    private Context mContext;
+    private final InputStream mInputStream;
+    private final Context mContext;
     private static final String LOG_TAG = WifiParserSax.class.getName();
 
     public WifiParserSax(InputStream inputStream, Context context)
@@ -23,7 +25,7 @@ public class WifiParserSax
         this.mInputStream= inputStream;
     }
 
-    public List<ContentValues> parse()
+    public List<Wifi> parse()
     {
         SAXParserFactory factory = SAXParserFactory.newInstance();
         try

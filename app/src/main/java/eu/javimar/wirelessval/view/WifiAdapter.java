@@ -1,10 +1,7 @@
 package eu.javimar.wirelessval.view;
 
-import android.content.ContentUris;
 import android.content.Context;
-import android.database.Cursor;
 import android.graphics.drawable.GradientDrawable;
-import android.net.Uri;
 import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,28 +10,30 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.core.content.ContextCompat;
+import androidx.fragment.app.FragmentActivity;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 import eu.javimar.wirelessval.R;
-import eu.javimar.wirelessval.model.GeoPoint;
-import eu.javimar.wirelessval.model.WifiContract.WifiEntry;
+import eu.javimar.wirelessval.model.Wifi;
+import eu.javimar.wirelessval.utils.GeoPoint;
+import eu.javimar.wirelessval.viewmodel.WifiViewModel;
+import eu.javimar.wirelessval.viewmodel.WifiViewModelFactory;
 
 import static eu.javimar.wirelessval.MainActivity.sCurrentPosition;
-import static eu.javimar.wirelessval.MainActivity.sTabletView;
-import static eu.javimar.wirelessval.utils.HelperUtils.deleteWifiFromDb;
-
 
 @SuppressWarnings("all")
 public class WifiAdapter extends RecyclerView.Adapter<WifiAdapter.WifiViewHolder>
 {
     private Context mContext;
-    private Cursor mCursor;
-
-    private static String LOG_TAG = WifiAdapter.class.getName();
+    private List<Wifi> wifiList;
+    private WifiViewModel mViewModel;
 
     /** To Keep track of swiped Items create arraylist “itemsPendingRemoval”
      * on Swipe add to item to itemsPendingRemoval list
@@ -51,10 +50,16 @@ public class WifiAdapter extends RecyclerView.Adapter<WifiAdapter.WifiViewHolder
     private final ListItemClickListener mOnClickListener;
 
     /** The interface that receives onClick messages */
-    public interface ListItemClickListener {
-        void onListItemClick(int clickedItemIndex);
+    public interface ListItemClickListener
+    {
+        void onListItemClick(String [] clickWifi);
     }
 
+    public void setWifiList(List<Wifi> wifis)
+    {
+        wifiList = wifis;
+        notifyDataSetChanged();
+    }
 
     /** Adapter constructor */
     public WifiAdapter(ListItemClickListener listener, Context context)
@@ -62,6 +67,10 @@ public class WifiAdapter extends RecyclerView.Adapter<WifiAdapter.WifiViewHolder
         mContext = context;
         mOnClickListener = listener;
         itemsPendingRemoval = new ArrayList<>();
+
+        mViewModel = new ViewModelProvider((FragmentActivity) context,
+                new WifiViewModelFactory(((FragmentActivity) context)
+                        .getApplication(), 0,0)).get(WifiViewModel.class);
     }
 
     /**
@@ -76,7 +85,6 @@ public class WifiAdapter extends RecyclerView.Adapter<WifiAdapter.WifiViewHolder
         return new WifiViewHolder(view);
     }
 
-
     /**
      * OnBindViewHolder is called by the RecyclerView to display the data at the specified
      * position. In this method, we update the contents of the ViewHolder to display the wifi
@@ -85,75 +93,58 @@ public class WifiAdapter extends RecyclerView.Adapter<WifiAdapter.WifiViewHolder
     @Override
     public void onBindViewHolder(WifiViewHolder holder, final int position)
     {
-        if (!mCursor.moveToPosition(position))
-            return; // bail if returned null
-
-        mCursor.moveToPosition(position);
-        // get necessary information to compare if item is already waiting to be removed
-        final GeoPoint wifiLocation = getCoordinatesFromCursor();
-
-        if (itemsPendingRemoval.contains(wifiLocation))
+        GeoPoint wifiLocation;
+        if(wifiList != null)
         {
-            // show swipe layout and hide the regular layout
-            holder.regularLayout.setVisibility(View.GONE);
-            holder.swipeLayout.setVisibility(View.VISIBLE);
-            holder.undoTextView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    undoOption(wifiLocation, position);
-                }
-            });
-        }
-        else
-        {
-            // Proceed normally with the regular layout and hide the swipe layout
-            holder.regularLayout.setVisibility(View.VISIBLE);
-            holder.swipeLayout.setVisibility(View.GONE);
+            wifiLocation =
+                    new GeoPoint(wifiList.get(position).getLongitude(),
+                            wifiList.get(position).getLatitude());
 
-            // Find the columns of wifi attributes that we're interested in
-            int nameColumnIndex = mCursor.getColumnIndex(WifiEntry.COLUMN_WIFI_NAME);
-            int opinionColumnIndex = mCursor.getColumnIndex(WifiEntry.COLUMN_WIFI_OPINION);
-
-            // Read the wifi attributes from the Cursor for the current wifi
-            String wifiName = mCursor.getString(nameColumnIndex);
-            String wifiOpinion = mCursor.getString(opinionColumnIndex);
-
-            // Update the TextViews with the attributes for the current wifi
-            holder.nameTextView.setText(wifiName);
-            holder.opinionTextView.setText(String.valueOf(Double.parseDouble(wifiOpinion)));
-
-            if (sCurrentPosition != null)
+            if (itemsPendingRemoval.contains(wifiLocation))
             {
-                int d = (int) sCurrentPosition.distance(wifiLocation);
-                if (d < 2000)
-                {
-                    holder.distanceView.setText(d + " m");
-                }
-                else
-                {
-                    holder.distanceView.setText(d / 1000 + " Km");
-                }
+                // show swipe layout and hide the regular layout
+                holder.regularLayout.setVisibility(View.GONE);
+                holder.swipeLayout.setVisibility(View.VISIBLE);
+                holder.undoTextView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        undoOption(wifiLocation, position);
+                    }
+                });
             }
             else
             {
-                holder.distanceView.setText("--");
+                // Proceed normally with the regular layout and hide the swipe layout
+                holder.regularLayout.setVisibility(View.VISIBLE);
+                holder.swipeLayout.setVisibility(View.GONE);
+                holder.nameTextView.setText(wifiList.get(position).getWifiName());
+                double opinion = wifiList.get(position).getOpinion();
+                holder.opinionTextView.setText(String.valueOf(opinion));
+
+                if (sCurrentPosition != null)
+                {
+                    int d = (int) sCurrentPosition.distance(wifiLocation);
+                    if (d < 2000)
+                    {
+                        holder.distanceView.setText(d + " m");
+                    }
+                    else
+                    {
+                        holder.distanceView.setText(d / 1000 + " Km");
+                    }
+                }
+                else
+                {
+                    holder.distanceView.setText("--");
+                }
+                GradientDrawable sectionCircle = (GradientDrawable)holder.opinionTextView.getBackground();
+                // Get the appropriate background color based on the current section
+                int sectionColor = getOpinionColor(Double.parseDouble(String.valueOf(opinion)));
+                // Set the color on circle
+                sectionCircle.setColor(sectionColor);
             }
-            GradientDrawable sectionCircle = (GradientDrawable)holder.opinionTextView.getBackground();
-            // Get the appropriate background color based on the current section
-            int sectionColor = getOpinionColor(Double.parseDouble(wifiOpinion));
-            // Set the color on circle
-            sectionCircle.setColor(sectionColor);
         }
     }
-
-
-    private GeoPoint getCoordinatesFromCursor()
-    {
-        double wifiLng = mCursor.getDouble(mCursor.getColumnIndex(WifiEntry.COLUMN_WIFI_LONGITUDE));
-        double wifiLat = mCursor.getDouble(mCursor.getColumnIndex(WifiEntry.COLUMN_WIFI_LATITUDE));
-        return new GeoPoint(wifiLng, wifiLat);
-    }
-
 
     private void undoOption(GeoPoint wifiLoc, int position)
     {
@@ -169,12 +160,14 @@ public class WifiAdapter extends RecyclerView.Adapter<WifiAdapter.WifiViewHolder
     /** Called when swipe action is initiated */
     public void pendingRemoval(final int position)
     {
-        mCursor.moveToPosition(position);
-        final GeoPoint wifiLoc = getCoordinatesFromCursor();
-        if (!itemsPendingRemoval.contains(wifiLoc))
+        GeoPoint geoPoint = new GeoPoint(wifiList.get(position).getLatitude(),
+                wifiList.get(position).getLongitude());
+        LatLng location = new LatLng(geoPoint.getLatitude(), geoPoint.getLongitude());
+
+        if (!itemsPendingRemoval.contains(location))
         {
             // there can be only one per run
-            itemsPendingRemoval.add(wifiLoc);
+            itemsPendingRemoval.add(geoPoint);
             // this will redraw row in "undoTextView" state
             notifyItemChanged(position);
             // let's create, store and post a runnable to remove the data
@@ -182,11 +175,11 @@ public class WifiAdapter extends RecyclerView.Adapter<WifiAdapter.WifiViewHolder
             {
                 @Override
                 public void run() {
-                    remove(wifiLoc, position);
+                    remove(geoPoint, position);
                 }
             };
             handler.postDelayed(pendingRemovalRunnable, PENDING_REMOVAL_TIMEOUT);
-            pendingRunnables.put(wifiLoc, pendingRemovalRunnable);
+            pendingRunnables.put(geoPoint, pendingRemovalRunnable);
         }
     }
 
@@ -198,24 +191,18 @@ public class WifiAdapter extends RecyclerView.Adapter<WifiAdapter.WifiViewHolder
             // clear list
             itemsPendingRemoval.remove(wifiLoc);
         }
-        Uri uri = ContentUris.withAppendedId(WifiEntry.CONTENT_URI,
-                getIdWifi(position));
-
-        if(sTabletView)
-        {
-
-        }
-
-        deleteWifiFromDb(mContext, uri);
+        mViewModel.deleteWifi(wifiList.get(position).getWifiName(),
+                wifiList.get(position).getLatitude(),
+                wifiList.get(position).getLongitude());
         notifyItemRemoved(position);
     }
 
     public boolean isPendingRemoval(int position)
     {
-        mCursor.moveToPosition(position);
-        return itemsPendingRemoval.contains(getCoordinatesFromCursor());
+        return itemsPendingRemoval.contains(new
+                GeoPoint(wifiList.get(position).getLatitude(),
+                wifiList.get(position).getLongitude()));
     }
-
 
     /**
      * Cache of the children views for a wifi list item.
@@ -244,43 +231,29 @@ public class WifiAdapter extends RecyclerView.Adapter<WifiAdapter.WifiViewHolder
         @Override
         public void onClick(View v)
         {
-            mOnClickListener.onListItemClick(getIdWifi(getAdapterPosition()));
+            mOnClickListener.onListItemClick(getWifi(getAdapterPosition()));
         }
     }
 
-    /** Returns the value of a database column from its current list position */
-    private int getIdWifi(int position)
+    private String[] getWifi(int position)
     {
-        if (mCursor != null) {
-            if (mCursor.moveToPosition(position)) {
-                return mCursor.getInt(mCursor.getColumnIndex(WifiEntry._ID));
-            }
-            else {
-                return -1;
-            }
+        // Wifi is made of name and coordinates to be unique
+        String[] wifi = new String[3];
+        if (wifiList != null)
+        {
+            wifi[0] = wifiList.get(position).getWifiName();
+            wifi[1] = String.valueOf(wifiList.get(position).getLatitude());
+            wifi[2] = String.valueOf(wifiList.get(position).getLongitude());
         }
-        else {
-            return -1;
-        }
+        return wifi;
     }
-
 
     @Override
     public int getItemCount()
     {
-        if (mCursor != null)
-            return mCursor.getCount();
-        return 0;
+        return wifiList == null ? 0 : wifiList.size();
     }
 
-    public void swapCursor(Cursor newCursor)
-    {
-        if (newCursor != null)
-        {
-            mCursor = newCursor;
-            notifyDataSetChanged();
-        }
-    }
 
     private int getOpinionColor(double rating)
     {
@@ -312,6 +285,4 @@ public class WifiAdapter extends RecyclerView.Adapter<WifiAdapter.WifiViewHolder
         // convert the color resource ID into an actual integer color value
         return ContextCompat.getColor(mContext, opinionColorResourceId);
     }
-
-
 }

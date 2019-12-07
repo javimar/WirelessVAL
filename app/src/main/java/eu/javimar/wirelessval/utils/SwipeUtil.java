@@ -24,12 +24,12 @@ public abstract class SwipeUtil extends ItemTouchHelper.SimpleCallback
     private int xMarkMargin;
 
     private boolean initiated;
-    private Context context;
+    private final Context context;
 
-    private int leftcolorCode;
+    private int leftColorCode;
     private String leftSwipeLabel;
 
-    public SwipeUtil(int dragDirs, int swipeDirs, Context context)
+    protected SwipeUtil(int dragDirs, int swipeDirs, Context context)
     {
         super(dragDirs, swipeDirs);
         this.context = context;
@@ -73,7 +73,7 @@ public abstract class SwipeUtil extends ItemTouchHelper.SimpleCallback
         int itemHeight = itemView.getBottom() - itemView.getTop();
 
         // Setting Swipe Background
-        ((ColorDrawable) background).setColor(getLeftcolorCode());
+        ((ColorDrawable) background).setColor(getLeftColorCode());
         background.setBounds(itemView.getRight() + (int) dX, itemView.getTop(),
                 itemView.getRight(), itemView.getBottom());
         background.draw(c);
@@ -100,7 +100,7 @@ public abstract class SwipeUtil extends ItemTouchHelper.SimpleCallback
         super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
     }
 
-    public String getLeftSwipeLabel() {
+    private String getLeftSwipeLabel() {
         return leftSwipeLabel;
     }
 
@@ -108,12 +108,11 @@ public abstract class SwipeUtil extends ItemTouchHelper.SimpleCallback
         this.leftSwipeLabel = leftSwipeLabel;
     }
 
-    public int getLeftcolorCode() {
-        return leftcolorCode;
+    private int getLeftColorCode() {
+        return leftColorCode;
     }
 
-    public void setLeftcolorCode(int leftcolorCode) {
-        this.leftcolorCode = leftcolorCode;
+    public void setLeftColorCode(int leftcolorCode) {
+        this.leftColorCode = leftcolorCode;
     }
-
 }

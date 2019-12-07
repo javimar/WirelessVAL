@@ -8,6 +8,7 @@
     <string name="menu_about">About Wireless VLC</string>
     <string name="menu_save">Save Wi-Fi</string>
     <string name="menu_load">Load new Wi-Fis</string>
+    <string name="menu_map">See Wi-Fis in Map</string>
 
     <!-- ERROR -->
     <string name="no_internet_connection">There is no Internet connection</string>
@@ -20,6 +21,7 @@
     <string name="deleteString">Delete</string>
     <string name="deletedString">Deleted!</string>
     <string name="undoString">Undo?</string>
+    <string name="wifiDeleted">Wifi deleted</string>
 
     <!-- ACTIVITY NAMES -->
     <string name="title_editor_activity">Edit Wi-Fi</string>
@@ -30,9 +32,6 @@
 
     <!-- FRAGMENT DETAIL -->
     <string name="fragment_detail_update_ok">Wifi updated OK</string>
-    <string name="fragment_detail_update_failed">Wifi update failed</string>
-    <string name="fragment_detail_delete_ok">Wifi deleted OK</string>
-    <string name="fragment_detail_delete_failed">Wifi delete failed</string>
     <string name="fragment_detail_changes_delete_confirmation">Are you sure you want to delete this wireless network?</string>
     <string name="fragment_detail_empty">Click on a wireless network to view its detail</string>
     <string name="info_detail_hint">Your comments about this Wi-Fi</string>
@@ -49,7 +48,7 @@
 
     <!-- PREFERENCES INTERNAL KEYS -->
     <string name="pref_latitude_key" translatable="false">latitudeKey</string>
-    <string name="pref_longtitude_key" translatable="false">longtitudeKey</string>
+    <string name="pref_longitude_key" translatable="false">longtitudeKey</string>
 
     <!-- ABOUT -->
     <string name="about_info_name">Wireless Valencia</string>
@@ -62,10 +61,8 @@
     <string name="cd_vlc_image">Image of the city of Valencia</string>
     <string name="cd_logo_author">Image of the author logo</string>
 
-    <!-- BOTTOM NAVIGATION LABELS -->
-    <string name="bn_list">List</string>
-    <string name="bn_map">Map</string>
-    <string name="bn_info">Info</string>
-
+    <!-- SEARCH LABELS -->
+    <string name="search_hint">Search Wifis</string>
+    <string name="menu_search">Search Wifis</string>
 
 </resources>

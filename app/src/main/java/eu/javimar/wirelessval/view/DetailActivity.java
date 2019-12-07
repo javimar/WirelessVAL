@@ -1,10 +1,10 @@
 package eu.javimar.wirelessval.view;
 
 import android.content.pm.ActivityInfo;
-import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentTransaction;
 
 import eu.javimar.wirelessval.R;
 
@@ -13,10 +13,9 @@ import eu.javimar.wirelessval.R;
  */
 public class DetailActivity extends AppCompatActivity
 {
-    FragmentDetail mFragmentDetail;
-
-    /** Save the fragment contents on screen orientation */
-    private final String FRAGMENT_STATE = "fragment_state";
+    private FragmentDetail fragmentDetail;
+    private static final String FRAGMENT_TAG = "fragment_tag";
+    private String[] mWifiKey;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -33,35 +32,36 @@ public class DetailActivity extends AppCompatActivity
         {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         }
+        mWifiKey = getIntent().getStringArrayExtra("wifiKey");
 
-        Uri wifi = getIntent().getData();
-        if (wifi != null)
+        if(savedInstanceState != null)
         {
-            if (savedInstanceState != null)
-            {
-                mFragmentDetail = (FragmentDetail)
-                        getFragmentManager().getFragment(savedInstanceState, FRAGMENT_STATE);
-                mFragmentDetail.displayFragmentDetail(wifi);
-            }
-            else
-            {
-                // Take the info from the intent and deliver it to the fragment so it can update
-                mFragmentDetail = (FragmentDetail)
-                        getFragmentManager().findFragmentById(R.id.fragment_detail);
-
-                mFragmentDetail.displayFragmentDetail(wifi);
-            }
+            fragmentDetail = (FragmentDetail)
+                    getSupportFragmentManager().findFragmentByTag(FRAGMENT_TAG);
         }
+
+        if(fragmentDetail == null)
+        {
+            fragmentDetail = new FragmentDetail();
+        }
+        displayFragment();
     }
 
-
-    @Override
-    protected void onSaveInstanceState(Bundle outState)
+    private void displayFragment()
     {
-        super.onSaveInstanceState(outState);
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        if(fragmentDetail.isAdded()) // if fragment is already in container
+        {
+            ft.show(fragmentDetail);
+        }
+        else
+        {
+            ft.add(R.id.frame_detail_phone, fragmentDetail, FRAGMENT_TAG);
+        }
 
-        //Save the fragment's instance
-        getFragmentManager().putFragment(outState, FRAGMENT_STATE, mFragmentDetail );
+        // commit changes
+        ft.commit();
+        getSupportFragmentManager().executePendingTransactions();
+        fragmentDetail.displayFragmentDetail1(mWifiKey);
     }
-
 }

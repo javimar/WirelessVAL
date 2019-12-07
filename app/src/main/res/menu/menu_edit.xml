@@ -14,7 +14,7 @@
         android:id="@+id/action_delete"
         android:title="@string/menu_delete"
         android:icon="@android:drawable/ic_menu_delete"
-        android:orderInCategory="220"
+        android:orderInCategory="111"
         app:showAsAction="collapseActionView|ifRoom" />
 
 </menu>

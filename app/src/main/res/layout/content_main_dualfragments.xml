@@ -10,7 +10,7 @@
     tools:context="eu.javimar.wirelessval.MainActivity" >
 
     <fragment
-        android:id="@+id/fragment_list"
+        android:id="@+id/fragment_list_tablet"
         android:layout_weight="30"
         android:layout_width="0px"
         android:layout_height="match_parent"

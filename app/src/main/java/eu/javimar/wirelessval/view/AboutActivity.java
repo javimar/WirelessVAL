@@ -38,73 +38,51 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  **/
 package eu.javimar.wirelessval.view;
 
-import android.app.Fragment;
-import android.content.Context;
 import android.graphics.drawable.AnimatedVectorDrawable;
 import android.os.Build;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import eu.javimar.wirelessval.R;
 
-
-public class FragmentAbout extends Fragment
+public class AboutActivity extends AppCompatActivity
 {
     private boolean full = false;
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState)
-    {
-        return inflater.inflate(R.layout.about_layout, container, false);
-    }
-
+    @BindView(R.id.textTitle) TextView title;
+    @BindView(R.id.textAboutVersion) TextView copy;
+    @BindView(R.id.textAboutInfo) TextView info;
+    @BindView(R.id.image_heart) ImageView  heart;
 
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState)
+    public void onCreate(Bundle savedInstanceState)
     {
-        super.onActivityCreated(savedInstanceState);
-
-        TextView title = getActivity().findViewById(R.id.textTitle);
-        TextView copy = getActivity().findViewById(R.id.textAboutVersion);
-        TextView info = getActivity().findViewById(R.id.textAboutInfo);
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.about_layout);
+        ButterKnife.bind(this);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
         {
             // heart animation
-            ImageView heart = getActivity().findViewById(R.id.image_heart);
             heart.setVisibility(View.VISIBLE);
             AnimatedVectorDrawable emptyHeart =
-                    (AnimatedVectorDrawable) getActivity().getDrawable(R.drawable.avd_heart_empty);
+                    (AnimatedVectorDrawable) getDrawable(R.drawable.avd_heart_empty);
             AnimatedVectorDrawable fillHeart =
-                    (AnimatedVectorDrawable) getActivity().getDrawable(R.drawable.avd_heart_fill);
+                    (AnimatedVectorDrawable) getDrawable(R.drawable.avd_heart_fill);
 
             AnimatedVectorDrawable drawable = full ? emptyHeart : fillHeart;
             heart.setImageDrawable(drawable);
-            if (drawable != null) {
-                drawable.start();
-            }
+            if (drawable != null) drawable.start();
             full = !full;
         }
-
         title.setText(getString(R.string.about_info_name));
         copy.setText(getString(R.string.about_info_copy));
         info.setText(getString(R.string.about_info_text));
     }
-
-    @Override
-    public void onAttach(Context context)
-    {
-        super.onAttach(context);
-        // calls to FragmentTransaction are asynchronous, this gives a NPE
-        // since MainActivity won't be attached by the time commit() returns
-        getActivity().setTitle(getString(R.string.title_about_activity));
-    }
-
 }

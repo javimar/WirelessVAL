@@ -1,14 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+
+<FrameLayout
+    android:id="@+id/frame_detail_phone"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android" />
 
-    <fragment
-        android:id="@+id/fragment_detail"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        class="eu.javimar.wirelessval.view.FragmentDetail" />
-
-</LinearLayout>

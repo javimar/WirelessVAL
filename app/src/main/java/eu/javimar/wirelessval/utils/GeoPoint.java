@@ -1,4 +1,4 @@
-package eu.javimar.wirelessval.model;
+package eu.javimar.wirelessval.utils;
 
 public class GeoPoint
 {
@@ -9,7 +9,6 @@ public class GeoPoint
         this.longitud= longitud;
         this.latitude = latitude;
     }
-
     public double distance(GeoPoint point)
     {
         final double EARTH_RADIUS = 6371000; // en metros
@@ -24,8 +23,8 @@ public class GeoPoint
         return c * EARTH_RADIUS;
     }
 
-    public double getLongitud() {return longitud;}
-    public void setLongitud(double longitud) {
+    public double getLongitude() {return longitud;}
+    public void setLongitude(double longitud) {
         this.longitud = longitud;
     }
     public double getLatitude() {
@@ -54,7 +53,6 @@ public class GeoPoint
         return !(latitude == 0 && longitud == 0);
     }
 
-
     /** Necessary methods to support GeoPoint as a HashMap key to reflect "equality" of two objects.*/
     @Override
     public int hashCode()
@@ -71,5 +69,4 @@ public class GeoPoint
         GeoPoint g = (GeoPoint) geo;
         return (g.latitude == this.latitude) && (g.longitud == this.longitud);
     }
-
 }
