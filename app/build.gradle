@@ -7,8 +7,8 @@ android {
         applicationId "eu.javimar.wirelessval"
         minSdkVersion 21
         targetSdkVersion 29
-        versionCode 4
-        versionName "1.2"
+        versionCode 5
+        versionName "2.0"
         resValue "string", "API_KEY", API_KEY
     }
     buildTypes {

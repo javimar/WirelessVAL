@@ -44,7 +44,7 @@
 
     <!-- ABOUT -->
     <string name="about_info_name">WiFi Valencia</string>
-    <string name="about_info_text">Versión 1.1\n\nDatos ofrecidos por el Ayuntamiento de Valencia</string>
+    <string name="about_info_text">Versión 2.0\n\nDatos ofrecidos por el Ayuntamiento de Valencia</string>
 
     <!-- CONTENT DESCRIPTION STRINGS -->
     <string name="cd_heart_image">Imagen de un corazón</string>
