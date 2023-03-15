@@ -38,15 +38,17 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  **/
 package eu.javimar.wirelessval.view;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.graphics.drawable.AnimatedVectorDrawable;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.content.res.AppCompatResources;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -55,11 +57,8 @@ import eu.javimar.wirelessval.R;
 public class AboutActivity extends AppCompatActivity
 {
     private boolean full = false;
-
-    @BindView(R.id.textTitle) TextView title;
-    @BindView(R.id.textAboutVersion) TextView copy;
-    @BindView(R.id.textAboutInfo) TextView info;
-    @BindView(R.id.image_heart) ImageView  heart;
+    @BindView(R.id.image_heart) ImageView heart;
+    @BindView(R.id.textUpdated) TextView lastUpdated;
 
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -78,22 +77,23 @@ public class AboutActivity extends AppCompatActivity
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         }
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
-        {
-            // heart animation
-            heart.setVisibility(View.VISIBLE);
-            AnimatedVectorDrawable emptyHeart =
-                    (AnimatedVectorDrawable) getDrawable(R.drawable.avd_heart_empty);
-            AnimatedVectorDrawable fillHeart =
-                    (AnimatedVectorDrawable) getDrawable(R.drawable.avd_heart_fill);
+        setLastUpdated();
+        // heart animation
+        heart.setVisibility(View.VISIBLE);
+        AnimatedVectorDrawable emptyHeart =
+                (AnimatedVectorDrawable) AppCompatResources.getDrawable(this, R.drawable.avd_heart_empty);
+        AnimatedVectorDrawable fillHeart =
+                (AnimatedVectorDrawable) AppCompatResources.getDrawable(this, R.drawable.avd_heart_fill);
 
-            AnimatedVectorDrawable drawable = full ? emptyHeart : fillHeart;
-            heart.setImageDrawable(drawable);
-            if (drawable != null) drawable.start();
-            full = !full;
-        }
-        title.setText(getString(R.string.about_info_name));
-        copy.setText(getString(R.string.about_info_copy));
-        info.setText(getString(R.string.about_info_text));
+        AnimatedVectorDrawable drawable = full ? emptyHeart : fillHeart;
+        heart.setImageDrawable(drawable);
+        if (drawable != null) drawable.start();
+        full = !full;
+    }
+
+    private void setLastUpdated() {
+        SharedPreferences sharedPref = getSharedPreferences("MY_PREFERENCE_NAME", Context.MODE_PRIVATE);
+        String updated = sharedPref.getString("LAST_UPDATED", "");
+        lastUpdated.setText(getString(R.string.about_data_updated, updated));
     }
 }

@@ -43,8 +43,9 @@
     <string name="settings_sort_by_opinion_label">Ordenar por opinión</string>
 
     <!-- ABOUT -->
+    <string name="about_data_updated">Última actualización: %s</string>
     <string name="about_info_name">WiFi Valencia</string>
-    <string name="about_info_text">Versión 2.0\n\nDatos ofrecidos por el Ayuntamiento de Valencia</string>
+    <string name="about_info_text">Versión 2.1\n\nFuente de los datos: Ajuntament de València – Dades Obertes</string>
 
     <!-- CONTENT DESCRIPTION STRINGS -->
     <string name="cd_heart_image">Imagen de un corazón</string>

@@ -39,11 +39,19 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  **/
 package eu.javimar.wirelessval;
 
+import static eu.javimar.wirelessval.utils.HelperUtils.PLAY_SERVICES_RESOLUTION_REQUEST;
+import static eu.javimar.wirelessval.utils.HelperUtils.isGooglePlayServicesAvailable;
+import static eu.javimar.wirelessval.utils.HelperUtils.isNetworkAvailable;
+import static eu.javimar.wirelessval.utils.HelperUtils.stripNonValidXMLCharacters;
+import static eu.javimar.wirelessval.utils.PrefUtils.retrieveLongAndLatFromPreferences;
+import static eu.javimar.wirelessval.utils.PrefUtils.updateLongAndLatInPreferences;
+
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -85,6 +93,8 @@ import com.google.android.material.snackbar.Snackbar;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import butterknife.BindView;
@@ -103,13 +113,6 @@ import eu.javimar.wirelessval.viewmodel.WifiViewModelFactory;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
-
-import static eu.javimar.wirelessval.utils.HelperUtils.PLAY_SERVICES_RESOLUTION_REQUEST;
-import static eu.javimar.wirelessval.utils.HelperUtils.isGooglePlayServicesAvailable;
-import static eu.javimar.wirelessval.utils.HelperUtils.isNetworkAvailable;
-import static eu.javimar.wirelessval.utils.HelperUtils.stripNonValidXMLCharacters;
-import static eu.javimar.wirelessval.utils.PrefUtils.retrieveLongAndLatFromPreferences;
-import static eu.javimar.wirelessval.utils.PrefUtils.updateLongAndLatInPreferences;
 
 public class MainActivity extends AppCompatActivity implements
                 FragmentList.OnItemSelectedListener,
@@ -590,6 +593,9 @@ public class MainActivity extends AppCompatActivity implements
             {
                 // insert List with all wifis into DB
                 mWifiViewModel.insertWifis(wifisListFromServer);
+
+                saveDate();
+
                 failToLoad = false;
             }
             else failToLoad = true;
@@ -615,6 +621,16 @@ public class MainActivity extends AppCompatActivity implements
                         Toast.LENGTH_SHORT).show();
             }
         }
+    }
+
+    private void saveDate() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MMM-yyyy HH:mm");
+        String current = LocalDateTime.now().format(formatter);
+
+        SharedPreferences sharedPref = getSharedPreferences("MY_PREFERENCE_NAME", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putString("LAST_UPDATED", current);
+        editor.apply();
     }
 
     @Override

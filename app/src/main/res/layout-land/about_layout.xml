@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-
 <androidx.core.widget.NestedScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -24,7 +23,7 @@
             android:textColor="@color/colorPrimary"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="Wireless Valencia" />
+            android:text="@string/about_info_name" />
 
         <TextView
             android:id="@+id/textAboutVersion"
@@ -36,7 +35,7 @@
             android:textAppearance="@style/TextAppearance.AppCompat.Display1"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textTitle"
-            tools:text="\u00A9 2019 Javier Martín" />
+            android:text="@string/about_info_copy" />
 
         <ImageView
             android:id="@+id/imageAbout"
@@ -50,10 +49,23 @@
             android:maxWidth="200dp"
             android:maxHeight="200dp"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.478"
+            app:layout_constraintTop_toBottomOf="@+id/textUpdated"
             app:srcCompat="@drawable/wifi_val" />
+
+        <TextView
+            android:id="@+id/textUpdated"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:gravity="center"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textColor="@color/colorPrimaryDark"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textAboutInfo"
+            tools:text="Última actualización" />
 
         <TextView
             android:id="@+id/textAboutInfo"
@@ -64,7 +76,7 @@
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textAboutVersion"
-            tools:text="Data offered by Ayuntamiento de Valencia" />
+            android:text="@string/about_info_text" />
 
         <ImageView
             android:id="@+id/image_heart"
