@@ -1,6 +1,9 @@
 package eu.javimar.wirelessval.view;
 
 
+import static eu.javimar.wirelessval.MainActivity.sCurrentPosition;
+import static eu.javimar.wirelessval.MainActivity.sTabletView;
+
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -11,8 +14,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.RatingBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
@@ -21,7 +22,6 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
@@ -29,25 +29,16 @@ import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
 import es.dmoral.toasty.Toasty;
 import eu.javimar.wirelessval.R;
+import eu.javimar.wirelessval.databinding.DetailLayoutBinding;
 import eu.javimar.wirelessval.model.Wifi;
 import eu.javimar.wirelessval.viewmodel.WifiViewModel;
 import eu.javimar.wirelessval.viewmodel.WifiViewModelFactory;
 
-
-import static eu.javimar.wirelessval.MainActivity.sCurrentPosition;
-import static eu.javimar.wirelessval.MainActivity.sTabletView;
-
 public class FragmentDetail extends Fragment implements OnMapReadyCallback
 {
-    @BindView(R.id.wifi_name_detail) TextView mNameText;
-    @BindView(R.id.wifi_comments) TextView mCommentsEditText ;
-    @BindView(R.id.wifi_opinion) RatingBar mOpinionRatingBar;
-    @BindView(R.id.mapView) MapView mMapView;
-
+    private DetailLayoutBinding binding;
     private LatLng mWifiLocation;
     private GoogleMap mGoogleMap;
 
@@ -71,9 +62,8 @@ public class FragmentDetail extends Fragment implements OnMapReadyCallback
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState)
     {
-        View rootView = inflater.inflate(R.layout.detail_layout, container, false);
-        ButterKnife.bind(this, rootView);
-        return rootView;
+        binding = DetailLayoutBinding.inflate(inflater, container, false);
+        return binding.getRoot();
     }
 
     @Override
@@ -81,7 +71,7 @@ public class FragmentDetail extends Fragment implements OnMapReadyCallback
     {
         super.onActivityCreated(savedInstanceState);
 
-        mOpinionRatingBar.setOnRatingBarChangeListener(null);
+        binding.wifiOpinion.setOnRatingBarChangeListener(null);
 
         // avoid focusable mode on the edit text
         getActivity().getWindow()
@@ -92,11 +82,11 @@ public class FragmentDetail extends Fragment implements OnMapReadyCallback
         if(savedInstanceState != null)
         {
             mapViewBundle = savedInstanceState.getBundle(MAPVIEW_BUNDLE_KEY);
-            mCommentsEditText.setText(savedInstanceState.getString(EDIT_TEXT_CONTENTS));
-            mOpinionRatingBar.setRating(savedInstanceState.getFloat(RATING_BAR_CONTENT));
+            binding.wifiComments.setText(savedInstanceState.getString(EDIT_TEXT_CONTENTS));
+            binding.wifiOpinion.setRating(savedInstanceState.getFloat(RATING_BAR_CONTENT));
         }
-        mMapView.onCreate(mapViewBundle);
-        mMapView.getMapAsync(this);
+        binding.mapView.onCreate(mapViewBundle);
+        binding.mapView.getMapAsync(this);
 
         mWifiViewModel= new ViewModelProvider(this,
                 new WifiViewModelFactory(getActivity().getApplication(),
@@ -115,22 +105,22 @@ public class FragmentDetail extends Fragment implements OnMapReadyCallback
                 mWifi = mWifiViewModel.getSearchWifiResults().getValue().get(0);
 
                 // Update the views on the screen with the values from the database
-                mNameText.setText(mWifiKey[0]);
+                binding.wifiNameDetail.setText(mWifiKey[0]);
 
                 // don't overwrite edit text when screen is rotated if there is a value
                 if(mWifi.getComments() != null && !mWifi.getComments().equals(""))
-                    mCommentsEditText.setText(mWifi.getComments());
+                    binding.wifiComments.setText(mWifi.getComments());
 
-                mOpinionRatingBar.setOnRatingBarChangeListener(
-                        (ratingBar, valor, fromUser) -> mOpinionRatingBar.setRating(valor));
+                binding.wifiOpinion.setOnRatingBarChangeListener(
+                        (ratingBar, valor, fromUser) -> binding.wifiOpinion.setRating(valor));
                 if(mWifi.getOpinion() != 0)
-                    mOpinionRatingBar.setRating(mWifi.getOpinion());
+                    binding.wifiOpinion.setRating(mWifi.getOpinion());
 
                 // on tablet view, refresh values always
                 if(sTabletView)
                 {
-                    mCommentsEditText.setText(mWifi.getComments());
-                    mOpinionRatingBar.setRating(mWifi.getOpinion());
+                    binding.wifiComments.setText(mWifi.getComments());
+                    binding.wifiOpinion.setRating(mWifi.getOpinion());
                 }
 
                 // place wifi in Map
@@ -217,8 +207,8 @@ public class FragmentDetail extends Fragment implements OnMapReadyCallback
 
     private void updateWifi()
     {
-        String comments = mCommentsEditText.getText().toString().trim();
-        float opinion = mOpinionRatingBar.getRating();
+        String comments = binding.wifiComments.getText().toString().trim();
+        float opinion = binding.wifiOpinion.getRating();
 
         mWifiViewModel.updateOpinion(mWifiKey[0], comments,
                 opinion, Double.parseDouble(mWifiKey[1]),
@@ -320,42 +310,43 @@ public class FragmentDetail extends Fragment implements OnMapReadyCallback
     public void onResume()
     {
         super.onResume();
-        mMapView.onResume();
+        binding.mapView.onResume();
     }
 
     @Override
     public void onStart()
     {
         super.onStart();
-        mMapView.onStart();
+        binding.mapView.onStart();
     }
 
     @Override
     public void onStop()
     {
         super.onStop();
-        mMapView.onStop();
+        binding.mapView.onStop();
     }
 
     @Override
     public void onPause()
     {
-        mMapView.onPause();
         super.onPause();
+        binding.mapView.onPause();
     }
 
     @Override
     public void onDestroy()
     {
-        mMapView.onDestroy();
         super.onDestroy();
+        binding.mapView.onDestroy();
+        binding = null;
     }
 
     @Override
     public void onLowMemory()
     {
         super.onLowMemory();
-        mMapView.onLowMemory();
+        binding.mapView.onLowMemory();
     }
 
     /** Save edit text contents on rotation change and MapView */
@@ -370,9 +361,9 @@ public class FragmentDetail extends Fragment implements OnMapReadyCallback
             mapViewBundle = new Bundle();
             outState.putBundle(MAPVIEW_BUNDLE_KEY, mapViewBundle);
         }
-        mMapView.onSaveInstanceState(mapViewBundle);
+        binding.mapView.onSaveInstanceState(mapViewBundle);
 
-        outState.putString(EDIT_TEXT_CONTENTS, mCommentsEditText.getText().toString());
-        outState.putFloat(RATING_BAR_CONTENT, mOpinionRatingBar.getRating());
+        outState.putString(EDIT_TEXT_CONTENTS, binding.wifiComments.getText().toString());
+        outState.putFloat(RATING_BAR_CONTENT, binding.wifiOpinion.getRating());
     }
 }

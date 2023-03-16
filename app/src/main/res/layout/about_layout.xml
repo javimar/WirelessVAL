@@ -56,7 +56,7 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/imageLogoAuthor"
-            android:text="@string/about_info_text" />
+            tools:text="@string/about_info_text" />
 
         <TextView
             android:id="@+id/textUpdated"

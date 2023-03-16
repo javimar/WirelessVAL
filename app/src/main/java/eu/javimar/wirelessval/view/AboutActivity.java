@@ -44,28 +44,26 @@ import android.content.pm.ActivityInfo;
 import android.graphics.drawable.AnimatedVectorDrawable;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.content.res.AppCompatResources;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
+import eu.javimar.wirelessval.BuildConfig;
 import eu.javimar.wirelessval.R;
+import eu.javimar.wirelessval.databinding.AboutLayoutBinding;
 
 public class AboutActivity extends AppCompatActivity
 {
     private boolean full = false;
-    @BindView(R.id.image_heart) ImageView heart;
-    @BindView(R.id.textUpdated) TextView lastUpdated;
+    private AboutLayoutBinding binding;
 
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.about_layout);
-        ButterKnife.bind(this);
+        binding = AboutLayoutBinding.inflate(getLayoutInflater());
+        View view = binding.getRoot();
+        setContentView(view);
 
         // want to lock orientation in tablets to landscape only :-/
         if(getResources().getBoolean(R.bool.land_only))
@@ -77,16 +75,18 @@ public class AboutActivity extends AppCompatActivity
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         }
 
+        binding.textAboutInfo.setText(getString(R.string.about_info_text, BuildConfig.VERSION_NAME));
+
         setLastUpdated();
         // heart animation
-        heart.setVisibility(View.VISIBLE);
+        binding.imageHeart.setVisibility(View.VISIBLE);
         AnimatedVectorDrawable emptyHeart =
                 (AnimatedVectorDrawable) AppCompatResources.getDrawable(this, R.drawable.avd_heart_empty);
         AnimatedVectorDrawable fillHeart =
                 (AnimatedVectorDrawable) AppCompatResources.getDrawable(this, R.drawable.avd_heart_fill);
 
         AnimatedVectorDrawable drawable = full ? emptyHeart : fillHeart;
-        heart.setImageDrawable(drawable);
+        binding.imageHeart.setImageDrawable(drawable);
         if (drawable != null) drawable.start();
         full = !full;
     }
@@ -94,6 +94,6 @@ public class AboutActivity extends AppCompatActivity
     private void setLastUpdated() {
         SharedPreferences sharedPref = getSharedPreferences("MY_PREFERENCE_NAME", Context.MODE_PRIVATE);
         String updated = sharedPref.getString("LAST_UPDATED", "");
-        lastUpdated.setText(getString(R.string.about_data_updated, updated));
+        binding.textUpdated.setText(getString(R.string.about_data_updated, updated));
     }
 }

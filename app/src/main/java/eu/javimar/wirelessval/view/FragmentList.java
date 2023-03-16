@@ -1,13 +1,14 @@
 package eu.javimar.wirelessval.view;
 
+import static eu.javimar.wirelessval.MainActivity.sCurrentPosition;
+import static eu.javimar.wirelessval.MainActivity.sTabletView;
+
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ProgressBar;
-import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
@@ -18,25 +19,17 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
 import eu.javimar.wirelessval.R;
+import eu.javimar.wirelessval.databinding.ListLayoutBinding;
 import eu.javimar.wirelessval.utils.SwipeUtil;
 import eu.javimar.wirelessval.viewmodel.WifiViewModel;
 import eu.javimar.wirelessval.viewmodel.WifiViewModelFactory;
-
-import static eu.javimar.wirelessval.MainActivity.sCurrentPosition;
-import static eu.javimar.wirelessval.MainActivity.sTabletView;
-
 
 public class FragmentList extends Fragment implements
         WifiAdapter.ListItemClickListener,
         SharedPreferences.OnSharedPreferenceChangeListener
 {
-    @BindView(R.id.wifiRecyclerView) RecyclerView mRecyclerView;
-    @BindView(R.id.empty_view) TextView mEmptyView;
-    @BindView(R.id.loading_indicator) ProgressBar mProgressBar;
-
+    private ListLayoutBinding binding;
     /** Save the recycler position on screen orientation and when coming back from DETAIL*/
     private static int lastFirstVisiblePosition;
 
@@ -53,9 +46,8 @@ public class FragmentList extends Fragment implements
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState)
     {
-        View rootView = inflater.inflate(R.layout.list_layout, container, false);
-        ButterKnife.bind(this, rootView);
-        return rootView;
+        binding = ListLayoutBinding.inflate(inflater, container, false);
+        return binding.getRoot();
     }
 
     @Override
@@ -63,12 +55,12 @@ public class FragmentList extends Fragment implements
     {
         super.onActivityCreated(savedInstanceState);
 
-        mRecyclerView.setHasFixedSize(true);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        mRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity(),
+        binding.wifiRecyclerView.setHasFixedSize(true);
+        binding.wifiRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        binding.wifiRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity(),
                 LinearLayoutManager.VERTICAL));
         mAdapter = new WifiAdapter(this, getActivity());
-        mRecyclerView.setAdapter(mAdapter);
+        binding.wifiRecyclerView.setAdapter(mAdapter);
 
         mWifiViewModel = new ViewModelProvider(this,
                 new WifiViewModelFactory(getActivity().getApplication(),
@@ -99,14 +91,14 @@ public class FragmentList extends Fragment implements
                     mAdapter.setWifiList(wifis);
                     if(wifis== null || wifis.size() <= 0)
                     {
-                        mEmptyView.setVisibility(View.VISIBLE);
-                        mEmptyView.setText(R.string.no_wifis_found);
+                        binding.emptyView.setVisibility(View.VISIBLE);
+                        binding.emptyView.setText(R.string.no_wifis_found);
                     }
                     else
                     {
-                        mEmptyView.setVisibility(View.GONE);
+                        binding.emptyView.setVisibility(View.GONE);
                     }
-                    mProgressBar.setVisibility(View.GONE);
+                    binding.loadingIndicator.setVisibility(View.GONE);
                 });
                 break;
 
@@ -116,14 +108,14 @@ public class FragmentList extends Fragment implements
                     mAdapter.setWifiList(wifis);
                     if(wifis== null || wifis.size() <= 0)
                     {
-                        mEmptyView.setVisibility(View.VISIBLE);
-                        mEmptyView.setText(R.string.no_wifis_found);
+                        binding.emptyView.setVisibility(View.VISIBLE);
+                        binding.emptyView.setText(R.string.no_wifis_found);
                     }
                     else
                     {
-                        mEmptyView.setVisibility(View.GONE);
+                        binding.emptyView.setVisibility(View.GONE);
                     }
-                    mProgressBar.setVisibility(View.GONE);
+                    binding.loadingIndicator.setVisibility(View.GONE);
                 });
                 break;
 
@@ -133,14 +125,14 @@ public class FragmentList extends Fragment implements
                     mAdapter.setWifiList(wifis);
                     if(wifis== null || wifis.size() <= 0)
                     {
-                        mEmptyView.setVisibility(View.VISIBLE);
-                        mEmptyView.setText(R.string.no_wifis_found);
+                        binding.emptyView.setVisibility(View.VISIBLE);
+                        binding.emptyView.setText(R.string.no_wifis_found);
                     }
                     else
                     {
-                        mEmptyView.setVisibility(View.GONE);
+                        binding.emptyView.setVisibility(View.GONE);
                     }
-                    mProgressBar.setVisibility(View.GONE);
+                    binding.loadingIndicator.setVisibility(View.GONE);
                 });
                 break;
         }
@@ -174,12 +166,12 @@ public class FragmentList extends Fragment implements
             mAdapter.setWifiList(wifis);
             if(wifis == null || wifis.size() <= 0)
             {
-                mEmptyView.setVisibility(View.VISIBLE);
-                mEmptyView.setText(R.string.no_wifis_found);
+                binding.emptyView.setVisibility(View.VISIBLE);
+                binding.emptyView.setText(R.string.no_wifis_found);
             }
             else
             {
-                mEmptyView.setVisibility(View.GONE);
+                binding.emptyView.setVisibility(View.GONE);
             }
         });
     }
@@ -191,14 +183,16 @@ public class FragmentList extends Fragment implements
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
                 int swipedPosition = viewHolder.getAdapterPosition();
-                WifiAdapter adapter = (WifiAdapter) mRecyclerView.getAdapter();
-                adapter.pendingRemoval(swipedPosition);
+                WifiAdapter adapter = (WifiAdapter) binding.wifiRecyclerView.getAdapter();
+                if (adapter != null) {
+                    adapter.pendingRemoval(swipedPosition);
+                }
             }
             @Override
             public int getSwipeDirs(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
                 int position = viewHolder.getAdapterPosition();
-                WifiAdapter adapter = (WifiAdapter) mRecyclerView.getAdapter();
-                if (adapter.isPendingRemoval(position))
+                WifiAdapter adapter = (WifiAdapter) binding.wifiRecyclerView.getAdapter();
+                if (adapter != null && adapter.isPendingRemoval(position))
                 {
                     return 0;
                 }
@@ -206,7 +200,7 @@ public class FragmentList extends Fragment implements
             }
         };
         ItemTouchHelper mItemTouchHelper = new ItemTouchHelper(swipeHelper);
-        mItemTouchHelper.attachToRecyclerView(mRecyclerView);
+        mItemTouchHelper.attachToRecyclerView(binding.wifiRecyclerView);
 
         // set swipe label
         swipeHelper.setLeftSwipeLabel(getString(R.string.deleteString));
@@ -219,7 +213,7 @@ public class FragmentList extends Fragment implements
     public void onPause()
     {
         super.onPause();
-        lastFirstVisiblePosition = ((LinearLayoutManager)mRecyclerView
+        lastFirstVisiblePosition = ((LinearLayoutManager)binding.wifiRecyclerView
                 .getLayoutManager()).findFirstCompletelyVisibleItemPosition();
     }
 
@@ -233,7 +227,7 @@ public class FragmentList extends Fragment implements
             observerSetup();
             sPreferencesHaveBeenUpdated = false;
         }
-        mRecyclerView.getLayoutManager().scrollToPosition(lastFirstVisiblePosition);
+        binding.wifiRecyclerView.getLayoutManager().scrollToPosition(lastFirstVisiblePosition);
     }
 
     /** MainActivity must implement this interface */
@@ -244,5 +238,12 @@ public class FragmentList extends Fragment implements
     public void setItemListener(OnItemSelectedListener listener)
     {
         this.mListener = listener;
+    }
+
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        binding = null;
     }
 }

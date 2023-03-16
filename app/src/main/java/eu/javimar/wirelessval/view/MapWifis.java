@@ -1,5 +1,8 @@
 package eu.javimar.wirelessval.view;
 
+import static eu.javimar.wirelessval.MainActivity.HAVE_LOCATION_PERMISSION;
+import static eu.javimar.wirelessval.MainActivity.sCurrentPosition;
+
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
@@ -27,9 +30,6 @@ import eu.javimar.wirelessval.utils.GeoPoint;
 import eu.javimar.wirelessval.viewmodel.WifiViewModel;
 import eu.javimar.wirelessval.viewmodel.WifiViewModelFactory;
 
-import static eu.javimar.wirelessval.MainActivity.HAVE_LOCATION_PERMISSION;
-import static eu.javimar.wirelessval.MainActivity.sCurrentPosition;
-
 
 public class MapWifis extends AppCompatActivity implements
         OnMapReadyCallback,
@@ -48,7 +48,9 @@ public class MapWifis extends AppCompatActivity implements
 
         SupportMapFragment mapFragment = (SupportMapFragment)
                 getSupportFragmentManager().findFragmentById(R.id.wifisMap);
-        mapFragment.getMapAsync(this);
+        if (mapFragment != null) {
+            mapFragment.getMapAsync(this);
+        }
 
         setTitle(getString(R.string.title_mapa_activity));
 

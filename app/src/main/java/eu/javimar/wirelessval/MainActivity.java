@@ -72,7 +72,6 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
-import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentTransaction;
@@ -87,7 +86,6 @@ import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.io.ByteArrayInputStream;
@@ -97,9 +95,8 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
 import es.dmoral.toasty.Toasty;
+import eu.javimar.wirelessval.databinding.ActivityMainBinding;
 import eu.javimar.wirelessval.model.Wifi;
 import eu.javimar.wirelessval.parser.WifiParserSax;
 import eu.javimar.wirelessval.utils.GeoPoint;
@@ -115,13 +112,10 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 public class MainActivity extends AppCompatActivity implements
-                FragmentList.OnItemSelectedListener,
-                GoogleApiClient.ConnectionCallbacks,
-                GoogleApiClient.OnConnectionFailedListener,
-                LocationListener
-{
-    @BindView(R.id.toolbarMain) Toolbar mToolbar;
-    @BindView(R.id.collapse_toolbar) CollapsingToolbarLayout collapsingToolbarLayout;
+        FragmentList.OnItemSelectedListener,
+        GoogleApiClient.ConnectionCallbacks,
+        GoogleApiClient.OnConnectionFailedListener,
+        LocationListener {
 
     // URL for the Ayto de Valencia web service for the list of the city Wireless spots
     private static final String WIFI_URL = "http://mapas.valencia.es/lanzadera/opendata/wifi/KML";
@@ -152,34 +146,31 @@ public class MainActivity extends AppCompatActivity implements
     private FragmentList mFragmentList;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        ButterKnife.bind(this);
+
+        ActivityMainBinding binding = ActivityMainBinding.inflate(getLayoutInflater());
+        View view = binding.getRoot();
+        setContentView(view);
 
         // want to lock orientation in tablets to landscape only :-/
-        if(getResources().getBoolean(R.bool.land_only))
-        {
+        if (getResources().getBoolean(R.bool.land_only)) {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-        }
-        else
-        {
+        } else {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         }
 
         // Toolbar
-        setSupportActionBar(mToolbar);
-        collapsingToolbarLayout.setTitle(getString(R.string.app_name));
+        setSupportActionBar(binding.toolbarMain);
+        binding.collapseToolbar.setTitle(getString(R.string.app_name));
 
         // Init ViewModel
         mWifiViewModel = new ViewModelProvider(MainActivity.this,
-                new WifiViewModelFactory(getApplication(),0, 0))
+                new WifiViewModelFactory(getApplication(), 0, 0))
                 .get(WifiViewModel.class);
 
         // Get the intent, verify the action and get the query
-        if(Intent.ACTION_SEARCH.equals(getIntent().getAction()))
-        {
+        if (Intent.ACTION_SEARCH.equals(getIntent().getAction())) {
             String query = getIntent().getStringExtra(SearchManager.QUERY);
             search4Wifis(query);
         }
@@ -190,25 +181,22 @@ public class MainActivity extends AppCompatActivity implements
         Palette.Swatch vibrant = palette.getVibrantSwatch();
         Palette.Swatch darkVibrant = palette.getDarkVibrantSwatch();
 
-        if(vibrant!= null && darkVibrant != null)
-        {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
-            {
+        if (vibrant != null && darkVibrant != null) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 Window window = getWindow();
                 window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
                 window.setStatusBarColor(darkVibrant.getRgb());
             }
-            collapsingToolbarLayout.setContentScrimColor(vibrant.getRgb());
-            collapsingToolbarLayout.setStatusBarScrimColor(darkVibrant.getRgb());
-            collapsingToolbarLayout.setCollapsedTitleTextColor(vibrant.getTitleTextColor());
+            binding.collapseToolbar.setContentScrimColor(vibrant.getRgb());
+            binding.collapseToolbar.setStatusBarScrimColor(darkVibrant.getRgb());
+            binding.collapseToolbar.setCollapsedTitleTextColor(vibrant.getTitleTextColor());
         }
 
         // check if Google Play Services is installed
         isGooglePlayServicesAvailable(this);
 
         // load wifi networks only when app is first installed
-        if (isNetworkAvailable(this) && isDatabaseEmpty())
-        {
+        if (isNetworkAvailable(this) && isDatabaseEmpty()) {
             loadWifisFromServer();
         }
 
@@ -220,15 +208,12 @@ public class MainActivity extends AppCompatActivity implements
                 .build();
 
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
-        mLocationCallback = new LocationCallback()
-        {
+        mLocationCallback = new LocationCallback() {
             @Override
-            public void onLocationResult(LocationResult locationResult)
-            {
+            public void onLocationResult(LocationResult locationResult) {
                 if (locationResult == null) return;
 
-                for(Location location : locationResult.getLocations())
-                {
+                for (Location location : locationResult.getLocations()) {
                     // location data
                     location.getLatitude();
                     location.getLongitude();
@@ -239,7 +224,7 @@ public class MainActivity extends AppCompatActivity implements
         };
 
         // check if we have last known coordinates, only at app start
-        if(sCurrentPosition == null) retrieveLongAndLatFromPreferences(this);
+        if (sCurrentPosition == null) retrieveLongAndLatFromPreferences(this);
 
         // manage control permissions for location services
         askForLocationPermission();
@@ -248,35 +233,30 @@ public class MainActivity extends AppCompatActivity implements
         View detailsFrame = findViewById(R.id.fragment_detail);
         sTabletView = detailsFrame != null && detailsFrame.getVisibility() == View.VISIBLE;
 
-        if(!sTabletView)
-        {
+        if (!sTabletView) {
             // Set the listener
             mFragmentList = (FragmentList) getSupportFragmentManager()
                     .findFragmentById(R.id.fragment_list_handset);
-            mFragmentList.setItemListener(this);
-        }
-        else
-        {
+        } else {
             mFragmentList = (FragmentList) getSupportFragmentManager()
                     .findFragmentById(R.id.fragment_list_tablet);
+        }
+        if (mFragmentList != null) {
             mFragmentList.setItemListener(this);
         }
     }
 
-    private boolean isDatabaseEmpty()
-    {
+    private boolean isDatabaseEmpty() {
         return mWifiViewModel.getCountNumberOfWifis() == 0;
     }
 
-    private void search4Wifis(String query)
-    {
+    private void search4Wifis(String query) {
         mFragmentList.passSearchResults(query);
     }
 
     /** MENU OPTIONS */
     @Override
-    public boolean onCreateOptionsMenu(Menu menu)
-    {
+    public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
 
         // Get the SearchView and set the searchable configuration
@@ -294,8 +274,9 @@ public class MainActivity extends AppCompatActivity implements
         searchAutoComplete.setHintTextColor(getResources().getColor(R.color.materialGreen100));
 
         // Get the search close button image view
-        ImageView closeButton = searchView.findViewById(R.id.search_close_btn);
+        ImageView closeButton = searchView.findViewById(androidx.appcompat.R.id.search_close_btn);
         // Set on click listener
+
         closeButton.setOnClickListener(v -> //onClick() :-)
         {
             //Clear query
@@ -309,12 +290,10 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item)
-    {
+    public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         Intent i;
-        switch (id)
-        {
+        switch (id) {
             case R.id.action_settings:
                 i = new Intent(this, SettingsActivity.class);
                 startActivity(i);
@@ -328,13 +307,10 @@ public class MainActivity extends AppCompatActivity implements
                 startActivity(i);
                 return true;
             case R.id.action_load:
-                if (!isNetworkAvailable(this))
-                {
+                if (!isNetworkAvailable(this)) {
                     Toasty.warning(this, getString(R.string.no_internet_connection),
                             Toast.LENGTH_SHORT).show();
-                }
-                else
-                {
+                } else {
                     loadWifisFromServer();
                 }
                 return true;
@@ -343,52 +319,44 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     /** LOCATION PERMISSION */
-    private void askForLocationPermission()
-    {
+    private void askForLocationPermission() {
         // if we don't have the permission to access fine location
         if (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED)
-        {
+                != PackageManager.PERMISSION_GRANTED) {
             // Este método muestra true si la app solicita el permiso anteriormente
             // y el usuario rechaza la solicitud
             if (ActivityCompat.shouldShowRequestPermissionRationale(this,
-                    Manifest.permission.ACCESS_FINE_LOCATION))
-            {
+                    Manifest.permission.ACCESS_FINE_LOCATION)) {
                 // we show an explanation why it is needed
                 Snackbar.make(findViewById(android.R.id.content), R.string.permission_location,
-                        Snackbar.LENGTH_INDEFINITE)
+                                Snackbar.LENGTH_INDEFINITE)
                         .setAction("OK", view -> ActivityCompat.requestPermissions(MainActivity.this,
                                 new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                                 REQUEST_LOCATION_PERMISSION_FINE)).show();
-            }
-            else
-            {
+            } else {
                 // no explanation needed, request the permission
                 ActivityCompat.requestPermissions(this,
                         new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                         REQUEST_LOCATION_PERMISSION_FINE);
             }
-        }
-        else
-        {
+        } else {
             HAVE_LOCATION_PERMISSION = true;
         }
         if (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.ACCESS_COARSE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED)
-        {
+                != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this,
                     new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                     REQUEST_LOCATION_PERMISSION_COARSE);
         }
 
     }
+
     @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults)
-    {
-        switch (requestCode)
-        {
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode) {
             case REQUEST_LOCATION_PERMISSION_FINE:
                 // If request is cancelled, the result arrays are empty.
                 // permission granted
@@ -399,8 +367,7 @@ public class MainActivity extends AppCompatActivity implements
 
             case REQUEST_LOCATION_PERMISSION_COARSE:
                 if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED)
-                {
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     // permission granted
                     HAVE_LOCATION_PERMISSION = true;
                 }
@@ -411,25 +378,19 @@ public class MainActivity extends AppCompatActivity implements
 
     /** ON ACTIVITY RESULT */
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data)
-    {
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         // comes from asking user to install GooglePlayServices
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == PLAY_SERVICES_RESOLUTION_REQUEST)
-        {
-            if (resultCode == RESULT_OK)
-            {
+        if (requestCode == PLAY_SERVICES_RESOLUTION_REQUEST) {
+            if (resultCode == RESULT_OK) {
                 // Make sure the app is not already connected or attempting to connect
-                if (!mGoogleApiClient.isConnecting() && !mGoogleApiClient.isConnected())
-                {
+                if (!mGoogleApiClient.isConnecting() && !mGoogleApiClient.isConnected()) {
                     mGoogleApiClient.connect();
                 }
-            }
-            else if (resultCode == RESULT_CANCELED)
-            {
+            } else if (resultCode == RESULT_CANCELED) {
                 Snackbar.make(findViewById(android.R.id.content),
-                        "Google Play Services must be installed.",
-                        Snackbar.LENGTH_INDEFINITE)
+                                "Google Play Services must be installed.",
+                                Snackbar.LENGTH_INDEFINITE)
                         .setAction("OK", view -> finish()).show();
             }
         }
@@ -437,16 +398,23 @@ public class MainActivity extends AppCompatActivity implements
 
     /** GOOGLE API FOR LOCATION IMPLEMENT METHODS */
     @Override
-    public void onConnected(Bundle bundle)
-    {
-        if(HAVE_LOCATION_PERMISSION)
-        {
+    public void onConnected(Bundle bundle) {
+        if (HAVE_LOCATION_PERMISSION) {
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                // TODO: Consider calling
+                //    ActivityCompat#requestPermissions
+                // here to request the missing permissions, and then overriding
+                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                //                                          int[] grantResults)
+                // to handle the case where the user grants the permission. See the documentation
+                // for ActivityCompat#requestPermissions for more details.
+                return;
+            }
             mFusedLocationClient.getLastLocation()
                     .addOnSuccessListener(this, location ->
                     {
                         // Got last known location. In some rare situations, this can be null.
-                        if (location != null)
-                        {
+                        if (location != null) {
                             sCurrentPosition.setLatitude(location.getLatitude());
                             sCurrentPosition.setLongitude(location.getLongitude());
                         }
@@ -455,35 +423,40 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void onConnectionSuspended(int cause)
-    {
+    public void onConnectionSuspended(int cause) {
         mGoogleApiClient.connect();
     }
 
     // if the location fails
     @Override
-    public void onConnectionFailed(ConnectionResult result)
-    {
+    public void onConnectionFailed(ConnectionResult result) {
         Toasty.warning(this, "Connection has failed", Toast.LENGTH_SHORT).show();
         Log.i(LOG_TAG, "Connection has failed " + result.getErrorCode());
     }
 
     /** Capture the location info in here */
     @Override
-    public void onLocationChanged(Location location)
-    {
-        if (location != null)
-        {
+    public void onLocationChanged(Location location) {
+        if (location != null) {
             sCurrentPosition.setLatitude(location.getLatitude());
             sCurrentPosition.setLongitude(location.getLongitude());
         }
     }
 
-    private void startLocationUpdates()
-    {
+    private void startLocationUpdates() {
         LocationRequest mLocationRequest = LocationRequest.create();
         mLocationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
         mLocationRequest.setInterval(REFRESH_TIME);
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
         mFusedLocationClient
                 .requestLocationUpdates(mLocationRequest, mLocationCallback, Looper.getMainLooper());
     }

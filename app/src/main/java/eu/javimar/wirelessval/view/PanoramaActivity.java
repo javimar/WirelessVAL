@@ -1,9 +1,9 @@
 package eu.javimar.wirelessval.view;
 
 import android.os.Bundle;
+import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 
 import com.google.android.gms.maps.OnStreetViewPanoramaReadyCallback;
 import com.google.android.gms.maps.StreetViewPanorama;
@@ -11,23 +11,22 @@ import com.google.android.gms.maps.StreetViewPanoramaFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.StreetViewPanoramaCamera;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
 import eu.javimar.wirelessval.R;
+import eu.javimar.wirelessval.databinding.StreetViewBinding;
 
 public class PanoramaActivity extends AppCompatActivity
         implements OnStreetViewPanoramaReadyCallback
 {
-    @BindView(R.id.toolbar) Toolbar toolbar;
 
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.street_view);
-        ButterKnife.bind(this);
+        StreetViewBinding binding = StreetViewBinding.inflate(getLayoutInflater());
+        View view = binding.getRoot();
+        setContentView(view);
 
         //App bar
-        setSupportActionBar(toolbar);
+        setSupportActionBar(binding.toolbar.toolbar);
 
         StreetViewPanoramaFragment streetViewPanoramaFragment =
                 (StreetViewPanoramaFragment) getFragmentManager()
