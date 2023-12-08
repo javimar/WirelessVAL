@@ -12,6 +12,6 @@ interface IWifiRepository {
     suspend fun countNumberOfRows(): Int
     suspend fun deleteWifi(name: String)
     suspend fun deleteAllWifis()
-    suspend fun getWifisFromServer(query: String, rows: Int): List<WifiBO>
+    suspend fun getWifisFromServer(limit: Int): List<WifiBO>
     suspend fun getSearchResults(query: String): List<WifiBO>
 }

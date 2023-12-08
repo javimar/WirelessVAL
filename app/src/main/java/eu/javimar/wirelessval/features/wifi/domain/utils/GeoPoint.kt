@@ -1,72 +1,46 @@
-package eu.javimar.wirelessval.utils;
+package eu.javimar.wirelessval.features.wifi.domain.utils
 
-public class GeoPoint
-{
-    private double longitud, latitude;
+import kotlin.math.abs
+import kotlin.math.atan2
+import kotlin.math.cos
+import kotlin.math.sin
+import kotlin.math.sqrt
 
-    public GeoPoint(double longitud, double latitude)
-    {
-        this.longitud= longitud;
-        this.latitude = latitude;
-    }
-    public double distance(GeoPoint point)
-    {
-        final double EARTH_RADIUS = 6371000; // en metros
-        double dLat = Math.toRadians(latitude - point.latitude);
-        double dLon = Math.toRadians(longitud - point.longitud);
-        double lat1 = Math.toRadians(point.latitude);
-        double lat2 = Math.toRadians(latitude);
-        double a = Math.sin(dLat/2) * Math.sin(dLat/2) +
-                Math.sin(dLon/2) * Math.sin(dLon/2) *
-                        Math.cos(lat1) * Math.cos(lat2);
-        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-        return c * EARTH_RADIUS;
+class GeoPoint(var longitude: Double, var latitude: Double) {
+
+    fun distance(point: GeoPoint): Double {
+        val earthRadius = 6371000.0 // en metros
+        val dLat = Math.toRadians(latitude - point.latitude)
+        val dLon = Math.toRadians(longitude - point.longitude)
+        val lat1 = Math.toRadians(point.latitude)
+        val lat2 = Math.toRadians(latitude)
+        val a = sin(dLat / 2) * sin(dLat / 2) + sin(dLon / 2) * sin(dLon / 2) * cos(lat1) * cos(lat2)
+        val c = 2 * atan2(sqrt(a), sqrt(1 - a))
+        return c * earthRadius
     }
 
-    public double getLongitude() {return longitud;}
-    public void setLongitude(double longitud) {
-        this.longitud = longitud;
-    }
-    public double getLatitude() {
-        return latitude;
-    }
-    public void setLatitude(double latitude) {
-        this.latitude = latitude;
-    }
-
-    @Override
-    public String toString()
-    {
-        if (hasCoordinates())
-        {
+    override fun toString(): String {
+        return if (hasCoordinates()) {
             // solo muestro las primeras posiciones, pero almaceno en BBDD el número entero
-            return ("Latitude: " + String.valueOf(latitude).substring(0, 6) +
-                    " Longitude: " + String.valueOf(longitud).substring(0, 6));
+            "Latitude: " + latitude.toString()
+                .substring(0, 6) + " Longitude: " + longitude.toString().substring(0, 6)
+        } else {
+            "Lat: $latitude,  Lng: $longitude"
         }
-        else {
-            return ("Lat: " + latitude + ",  Lng: " + longitud);
-        }
     }
 
-    private boolean hasCoordinates()
-    {
-        return !(latitude == 0 && longitud == 0);
+    private fun hasCoordinates(): Boolean {
+        return !(latitude == 0.0 && longitude == 0.0)
     }
 
-    /** Necessary methods to support GeoPoint as a HashMap key to reflect "equality" of two objects.*/
-    @Override
-    public int hashCode()
-    {
-        return (int)((Math.abs(longitud + latitude)));
+    /** Necessary methods to support GeoPoint as a HashMap key to reflect "equality" of two objects. */
+    override fun hashCode(): Int {
+        return abs(longitude + latitude).toInt()
     }
 
-    @Override
-    public boolean equals(Object geo)
-    {
-        if(!(geo instanceof GeoPoint))
-            return false;
-
-        GeoPoint g = (GeoPoint) geo;
-        return (g.latitude == this.latitude) && (g.longitud == this.longitud);
+    override fun equals(other: Any?): Boolean {
+        if (other !is GeoPoint) return false
+        val g = other
+        return g.latitude == latitude && g.longitude == longitude
     }
 }

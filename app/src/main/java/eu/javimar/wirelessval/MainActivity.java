@@ -97,9 +97,9 @@ import java.util.List;
 
 import es.dmoral.toasty.Toasty;
 import eu.javimar.wirelessval.databinding.ActivityMainBinding;
+import eu.javimar.wirelessval.features.wifi.domain.utils.GeoPoint;
 import eu.javimar.wirelessval.model.Wifi;
 import eu.javimar.wirelessval.parser.WifiParserSax;
-import eu.javimar.wirelessval.utils.GeoPoint;
 import eu.javimar.wirelessval.view.AboutActivity;
 import eu.javimar.wirelessval.view.DetailActivity;
 import eu.javimar.wirelessval.view.FragmentDetail;

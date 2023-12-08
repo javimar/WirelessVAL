@@ -25,8 +25,8 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import java.util.List;
 
 import eu.javimar.wirelessval.R;
+import eu.javimar.wirelessval.features.wifi.domain.utils.GeoPoint;
 import eu.javimar.wirelessval.model.Wifi;
-import eu.javimar.wirelessval.utils.GeoPoint;
 import eu.javimar.wirelessval.viewmodel.WifiViewModel;
 import eu.javimar.wirelessval.viewmodel.WifiViewModelFactory;
 

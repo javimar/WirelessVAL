@@ -1,5 +1,7 @@
 package eu.javimar.wirelessval.view;
 
+import static eu.javimar.wirelessval.MainActivity.sCurrentPosition;
+
 import android.content.Context;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Handler;
@@ -21,12 +23,10 @@ import java.util.HashMap;
 import java.util.List;
 
 import eu.javimar.wirelessval.R;
+import eu.javimar.wirelessval.features.wifi.domain.utils.GeoPoint;
 import eu.javimar.wirelessval.model.Wifi;
-import eu.javimar.wirelessval.utils.GeoPoint;
 import eu.javimar.wirelessval.viewmodel.WifiViewModel;
 import eu.javimar.wirelessval.viewmodel.WifiViewModelFactory;
-
-import static eu.javimar.wirelessval.MainActivity.sCurrentPosition;
 
 @SuppressWarnings("all")
 public class WifiAdapter extends RecyclerView.Adapter<WifiAdapter.WifiViewHolder>

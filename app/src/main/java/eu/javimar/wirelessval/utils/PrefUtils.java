@@ -1,12 +1,13 @@
 package eu.javimar.wirelessval.utils;
 
+import static eu.javimar.wirelessval.MainActivity.sCurrentPosition;
+
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
 import eu.javimar.wirelessval.R;
-
-import static eu.javimar.wirelessval.MainActivity.sCurrentPosition;
+import eu.javimar.wirelessval.features.wifi.domain.utils.GeoPoint;
 
 public final class PrefUtils
 {
