@@ -1,0 +1,5 @@
+-- Migrate from:
+--      version 1 - using SQL
+--      to
+--      version 2 - using Room
+--Since we didn't alter the table, there's nothing else to do here.
