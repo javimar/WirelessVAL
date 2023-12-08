@@ -13,9 +13,9 @@ If you have time, take a look at how the app was migrated from old Java to moder
 
 ### Some screen shots
 
-![Screenshot 1](https://github.com/javimar/WirelessVAL/blob/master/screenshots/Main.png)
-![Screenshot 2](https://github.com/javimar/WirelessVAL/blob/master/screenshots/Main_light.png)
-![Screenshot 3](https://github.com/javimar/WirelessVAL/blob/master/screenshots/About.png) 
-![Screenshot 4](https://github.com/javimar/WirelessVAL/blob/master/screenshots/EditWifi.png)
-![Screenshot 5](https://github.com/javimar/WirelessVAL/blob/master/screenshots/Maps.png)
-![Screenshot 6](https://github.com/javimar/WirelessVAL/blob/master/screenshots/Settings.png)
+![Screenshot 1](https://github.com/javimar/WirelessVAL/blob/master/screenshots/MainSC.png)
+![Screenshot 2](https://github.com/javimar/WirelessVAL/blob/master/screenshots/Main_lightSC.png)
+![Screenshot 3](https://github.com/javimar/WirelessVAL/blob/master/screenshots/AboutSC.png) 
+![Screenshot 4](https://github.com/javimar/WirelessVAL/blob/master/screenshots/EditWifiSC.png)
+![Screenshot 5](https://github.com/javimar/WirelessVAL/blob/master/screenshots/MapsSC.png)
+![Screenshot 6](https://github.com/javimar/WirelessVAL/blob/master/screenshots/SettingsSC.png)
