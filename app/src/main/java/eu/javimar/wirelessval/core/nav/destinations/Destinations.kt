@@ -8,9 +8,12 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import eu.javimar.wirelessval.core.nav.screens.Screens
+import eu.javimar.wirelessval.core.nav.screens.WifiNavArgs
+import eu.javimar.wirelessval.core.nav.serializableTypeOf
 import eu.javimar.wirelessval.features.about.presentation.WifiAboutMain
 import eu.javimar.wirelessval.features.map.WifiMapMain
 import eu.javimar.wirelessval.features.settings.presentation.WifiSettingsMain
+import eu.javimar.wirelessval.features.wifi.domain.model.WifiBO
 import eu.javimar.wirelessval.features.wifi.presentation.detail.WifiDetailMain
 import eu.javimar.wirelessval.features.wifi.presentation.listing.WifiListMain
 
@@ -59,11 +62,10 @@ fun NavGraphBuilder.wifiDetailDestination(
     snackbarHostState: SnackbarHostState,
 ) {
     composable(
-        route = "${Screens.Detail.route}/{fallaName}",
+        route = Screens.Detail.route,
         arguments = listOf(
-            navArgument(name = "fallaName") {
-                type = NavType.StringType
-                defaultValue = ""
+            navArgument(name = WifiNavArgs.Wifi.key) {
+                type = NavType.serializableTypeOf<WifiBO>()
             }
         )
     ) {

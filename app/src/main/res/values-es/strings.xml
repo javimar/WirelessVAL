@@ -46,7 +46,7 @@
     <string name="fragment_detail_update_ok">WiFi actualizada</string>
     <string name="fragment_detail_changes_delete_confirmation">¿Estás segur@ que quieres borrar este red?</string>
     <string name="fragment_detail_empty">Haz clic en la red para ver el detalle</string>
-    <string name="info_detail_hint">Tus comentarios sobre esta WiFi</string>
+    <string name="detail_comments">Tus comentarios sobre esta WiFi</string>
 
     <!-- PERMISSION -->
     <string name="permission_location">Necesito el permiso de ubicación para funcionar bien</string>
@@ -83,5 +83,6 @@
     <string name="wifiDeleted">Wifi borrada</string>
 
     <string name="wifis_empty">Se siente cierta soledad por aquí. ¿Por qué no cargas las Wifis?</string>
+    <string name="distance_meters_label">%s metros</string>
 
 </resources>

@@ -4,6 +4,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.viewModelScope
+import com.google.android.gms.maps.model.LatLng
 import dagger.hilt.android.lifecycle.HiltViewModel
 import eu.javimar.wirelessval.R
 import eu.javimar.wirelessval.core.common.presentation.BaseViewModel
@@ -16,11 +17,11 @@ import eu.javimar.wirelessval.features.settings.domain.utils.SharePrefsKeys
 import eu.javimar.wirelessval.features.settings.domain.utils.SharePrefsKeys.LAST_UPDATED_KEY
 import eu.javimar.wirelessval.features.settings.domain.utils.SharePrefsKeys.LOCATION_KEY
 import eu.javimar.wirelessval.features.settings.domain.utils.SharePrefsKeys.WIFIS_ORDER_KEY
+import eu.javimar.wirelessval.features.wifi.data.mapper.toWifiCoordinates
 import eu.javimar.wirelessval.features.wifi.domain.model.WifiBO
-import eu.javimar.wirelessval.features.wifi.domain.usecase.wifilisting.GetWifisUseCase
-import eu.javimar.wirelessval.features.wifi.domain.usecase.wifilisting.ReloadFromServerUseCase
-import eu.javimar.wirelessval.features.wifi.domain.usecase.wifilisting.SearchWifisUseCase
-import eu.javimar.wirelessval.features.wifi.domain.utils.GeoPoint
+import eu.javimar.wirelessval.features.wifi.domain.usecase.GetWifisUseCase
+import eu.javimar.wirelessval.features.wifi.domain.usecase.ReloadFromServerUseCase
+import eu.javimar.wirelessval.features.wifi.domain.usecase.SearchWifisUseCase
 import eu.javimar.wirelessval.features.wifi.domain.utils.WifiOrderOptions
 import eu.javimar.wirelessval.features.wifi.domain.utils.getOrderOptionFromValue
 import eu.javimar.wirelessval.features.wifi.presentation.listing.state.WifiListEvent
@@ -55,11 +56,7 @@ class WifiListViewModel @Inject constructor(
 
     override fun <T> onEvent(event: T) {
         when(event) {
-            is WifiListEvent.OnWifiClick -> {
-                sendUiEvent(
-                    UIEvent.Navigate("${Screens.Detail.route}/${event.wifi.wifiName}")
-                )
-            }
+            is WifiListEvent.OnWifiClick -> sendUiEvent(UIEvent.Navigate(Screens.Detail.createRoute(event.wifi)))
             is WifiListEvent.SearchWifis -> searchWifis(event.value)
             WifiListEvent.RefreshWifiOnScreen -> getOrderOption()
             WifiListEvent.AskReloadWifis -> {
@@ -136,7 +133,7 @@ class WifiListViewModel @Inject constructor(
                     getWifisResult(result)
                 }.launchIn(viewModelScope)
             } else {
-                getWifisUseCase.execute(orderOptions = orderOptions, gps = state.location).onEach { result ->
+                getWifisUseCase.execute(orderOptions = orderOptions, gps = state.location.toWifiCoordinates()).onEach { result ->
                     getWifisResult(result)
                 }.launchIn(viewModelScope)
             }
@@ -185,7 +182,7 @@ class WifiListViewModel @Inject constructor(
                     location.split(",").let {
                         try {
                             state = state.copy(
-                                location = GeoPoint(it[0].toDouble(), it[1].toDouble())
+                                location = LatLng(it[0].toDouble(), it[1].toDouble())
                             )
                         } catch(e: NumberFormatException) {
                             e.printStackTrace()

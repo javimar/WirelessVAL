@@ -31,7 +31,6 @@ fun WifiDetailMain(
     WifiDetailScreen(
         state = viewModel.state,
         onEvent = viewModel::onEvent,
-        isNightMode = viewModel.isNightMode,
         snackbarHostState = snackbarHostState,
     )
 }

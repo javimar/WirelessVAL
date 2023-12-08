@@ -50,7 +50,7 @@
     <string name="fragment_detail_update_ok">Wifi updated OK</string>
     <string name="fragment_detail_changes_delete_confirmation">Are you sure you want to delete this wireless network?</string>
     <string name="fragment_detail_empty">Click on a wireless network to view its detail</string>
-    <string name="info_detail_hint">Your comments about this Wi-Fi</string>
+    <string name="detail_comments">Your comments about this Wi-Fi</string>
 
     <!-- PERMISSION -->
     <string name="permission_location">I need the location permission to work properly</string>
@@ -83,5 +83,7 @@
     <string name="about_instructions">This app shows you all the Wifis located in the Valencia metropolitan area.\n\nYou can rate and add comments for each wireless network for your internal use.</string>
 
     <string name="wifis_empty">It is a bit lonely here. Why don\'t you load some wifis?</string>
+    <string name="distance_meters_label">%s meters</string>
+    <string name="distance_km_label" translatable="false">%s km</string>
 
 </resources>

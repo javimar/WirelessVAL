@@ -1,11 +1,11 @@
-package eu.javimar.wirelessval.features.wifi.domain.usecase.wifilisting
+package eu.javimar.wirelessval.features.wifi.domain.usecase
 
 import eu.javimar.wirelessval.R
 import eu.javimar.wirelessval.core.util.Resource
 import eu.javimar.wirelessval.core.util.UIText
 import eu.javimar.wirelessval.features.wifi.domain.model.WifiBO
 import eu.javimar.wirelessval.features.wifi.domain.repository.IWifiRepository
-import eu.javimar.wirelessval.features.wifi.domain.utils.GeoPoint
+import eu.javimar.wirelessval.features.wifi.domain.utils.WifiCoordinates
 import eu.javimar.wirelessval.features.wifi.domain.utils.WifiOrderOptions
 import eu.javimar.wirelessval.features.wifi.domain.utils.updateWifisList
 import kotlinx.coroutines.Dispatchers
@@ -28,7 +28,7 @@ class ReloadFromServerUseCase @Inject constructor(
         try {
             val wifisRemote = repository.getWifisFromServer(limit)
             val existingWifis = repository
-                .getAllWifisByOption(orderOptions, GeoPoint(-0.3773900, 39.4697500))
+                .getAllWifisByOption(orderOptions, WifiCoordinates(39.4697500, -0.3773900))
             existingWifis.toMutableList().updateWifisList(wifisRemote)
             repository.deleteAllWifis()
             repository.insertWifis(existingWifis)

@@ -31,6 +31,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import eu.javimar.wirelessval.R
+import eu.javimar.wirelessval.core.common.distance
 import eu.javimar.wirelessval.core.common.hasLocationEnabled
 import eu.javimar.wirelessval.core.common.location.LocationDialog
 import eu.javimar.wirelessval.core.common.openLocationSettings
@@ -154,8 +155,10 @@ fun WifiListScreen(
                                         .fillMaxWidth()
                                         .padding(8.dp),
                                     distance = state.location.distance(
-                                        wifi.coordinates,
-                                    ).toString()
+                                        wifi.coordinates.latitude,
+                                        wifi.coordinates.longitude,
+                                        context
+                                    )
                                 )
                             })
                     }

@@ -2,6 +2,7 @@ package eu.javimar.wirelessval.features.map
 
 import android.content.Context
 import android.graphics.Bitmap
+import android.graphics.Canvas
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -101,18 +102,14 @@ fun bitmapDescriptorFromVector(
     context: Context,
     vectorResId: Int
 ): BitmapDescriptor? {
-
-    val drawable = ContextCompat.getDrawable(context, vectorResId) ?: return null
-
-    drawable.setBounds(0, 0, drawable.intrinsicWidth, drawable.intrinsicHeight)
-
-    val bm = Bitmap.createBitmap(
-        drawable.intrinsicWidth,
-        drawable.intrinsicHeight,
-        Bitmap.Config.ARGB_8888
-    )
-
-    val canvas = android.graphics.Canvas(bm)
-    drawable.draw(canvas)
-    return BitmapDescriptorFactory.fromBitmap(bm)
+    return ContextCompat.getDrawable(context, vectorResId)?.run {
+        setBounds(0, 0, intrinsicWidth, intrinsicHeight)
+        val bitmap = Bitmap.createBitmap(
+            intrinsicWidth,
+            intrinsicHeight,
+            Bitmap.Config.ARGB_8888
+        )
+        draw(Canvas(bitmap))
+        BitmapDescriptorFactory.fromBitmap(bitmap)
+    }
 }

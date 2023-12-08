@@ -1,6 +1,8 @@
 package eu.javimar.wirelessval.features.wifi.data.mapper
 
+import com.google.android.gms.maps.model.LatLng
 import eu.javimar.wirelessval.features.wifi.domain.model.WifiBO
+import eu.javimar.wirelessval.features.wifi.domain.utils.WifiCoordinates
 import eu.javimar.wirelessval.sqldelight.Wifis
 
 fun List<WifiBO>?.toFallasList(): List<Wifis> =
@@ -16,3 +18,13 @@ fun WifiBO.toWifis(): Wifis =
         comments = comments,
         opinion = opinion
     )
+
+fun WifiCoordinates.toLatLng() = LatLng(
+    this.latitude,
+    this.longitude
+)
+
+fun LatLng.toWifiCoordinates() = WifiCoordinates(
+    this.latitude,
+    this.longitude
+)

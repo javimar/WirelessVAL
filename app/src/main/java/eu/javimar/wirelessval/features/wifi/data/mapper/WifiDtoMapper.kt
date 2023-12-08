@@ -3,7 +3,7 @@ package eu.javimar.wirelessval.features.wifi.data.mapper
 import eu.javimar.wirelessval.features.wifi.data.remote.dto.GeoPointDto
 import eu.javimar.wirelessval.features.wifi.data.remote.dto.WifiDto
 import eu.javimar.wirelessval.features.wifi.domain.model.WifiBO
-import eu.javimar.wirelessval.features.wifi.domain.utils.GeoPoint
+import eu.javimar.wirelessval.features.wifi.domain.utils.WifiCoordinates
 
 fun List<WifiDto>?.toWifiBOList(): List<WifiBO> =
     this?.map { it.toWifiBO() }?.toList() ?: run {
@@ -19,8 +19,8 @@ fun WifiDto.toWifiBO(): WifiBO {
     )
 }
 
-fun GeoPointDto?.toGeoPoint(): GeoPoint {
-    return GeoPoint(
+fun GeoPointDto?.toGeoPoint(): WifiCoordinates {
+    return WifiCoordinates(
         longitude = this?.longitude ?: 0.0,
         latitude = this?.latitude ?: 0.0
     )

@@ -1,11 +1,11 @@
-package eu.javimar.wirelessval.features.wifi.domain.usecase.wifilisting
+package eu.javimar.wirelessval.features.wifi.domain.usecase
 
 import eu.javimar.wirelessval.R
 import eu.javimar.wirelessval.core.util.Resource
 import eu.javimar.wirelessval.core.util.UIText
 import eu.javimar.wirelessval.features.wifi.domain.model.WifiBO
 import eu.javimar.wirelessval.features.wifi.domain.repository.IWifiRepository
-import eu.javimar.wirelessval.features.wifi.domain.utils.GeoPoint
+import eu.javimar.wirelessval.features.wifi.domain.utils.WifiCoordinates
 import eu.javimar.wirelessval.features.wifi.domain.utils.WifiOrderOptions
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -20,7 +20,7 @@ class GetWifisUseCase @Inject constructor(
     fun execute(
         limit: Int = -1,
         orderOptions: WifiOrderOptions,
-        gps: GeoPoint
+        gps: WifiCoordinates
     ): Flow<Resource<List<WifiBO>>> = flow {
 
         var isFirstLoading = false

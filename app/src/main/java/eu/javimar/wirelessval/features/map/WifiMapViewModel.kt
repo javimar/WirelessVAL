@@ -4,6 +4,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.viewModelScope
+import com.google.android.gms.maps.model.LatLng
 import dagger.hilt.android.lifecycle.HiltViewModel
 import eu.javimar.wirelessval.core.common.presentation.BaseViewModel
 import eu.javimar.wirelessval.core.nav.screens.Screens
@@ -13,8 +14,8 @@ import eu.javimar.wirelessval.core.util.UIText
 import eu.javimar.wirelessval.features.settings.domain.repository.IPreferencesRepository
 import eu.javimar.wirelessval.features.settings.domain.utils.SharePrefsKeys
 import eu.javimar.wirelessval.features.settings.domain.utils.SharePrefsKeys.LOCATION_KEY
-import eu.javimar.wirelessval.features.wifi.domain.usecase.wifilisting.GetWifisUseCase
-import eu.javimar.wirelessval.features.wifi.domain.utils.GeoPoint
+import eu.javimar.wirelessval.features.wifi.domain.usecase.GetWifisUseCase
+import eu.javimar.wirelessval.features.wifi.domain.utils.WifiCoordinates
 import eu.javimar.wirelessval.features.wifi.domain.utils.WifiOrderOptions
 import eu.javimar.wirelessval.features.wifi.presentation.listing.state.WifiState
 import kotlinx.coroutines.flow.launchIn
@@ -40,20 +41,19 @@ class WifiMapViewModel @Inject constructor(
         when (event) {
             is WifiMapEvent.OnWifiClick -> {
                 sendUiEvent(
-                    UIEvent.Navigate("${Screens.Detail.route}/${event.wifi.wifiName}")
+                    UIEvent.Navigate(Screens.Detail.createRoute(event.wifi))
                 )
             }
-            WifiMapEvent.ReadNightMode -> state =
-                state.copy(
-                    isNightMode = preferences.readBooleanValue(SharePrefsKeys.IS_DARK_KEY)
-                )
+            WifiMapEvent.ReadNightMode -> {
+                state = state.copy(isNightMode = preferences.readBooleanValue(SharePrefsKeys.IS_DARK_KEY))
+            }
         }
     }
   
     private fun getWifis() {
         viewModelScope.launch {
             getWifisUseCase.execute(
-                orderOptions = WifiOrderOptions.NAME, gps = GeoPoint(0.0, 0.0)
+                orderOptions = WifiOrderOptions.NAME, gps = WifiCoordinates(0.0, 0.0)
             ).onEach { result ->
                 when(result) {
                     is Resource.Loading -> {
@@ -88,7 +88,7 @@ class WifiMapViewModel @Inject constructor(
                 if(location.isNotEmpty()) {
                     location.split(",").let {
                         try {
-                            state = state.copy(location = GeoPoint(it[0].toDouble(), it[1].toDouble()))
+                            state = state.copy(location = LatLng(it[0].toDouble(), it[1].toDouble()))
                         } catch(e: NumberFormatException) {
                             e.printStackTrace()
                         }

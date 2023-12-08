@@ -1,7 +1,8 @@
 package eu.javimar.wirelessval.features.wifi.data.local.datasource
 
 import eu.javimar.wirelessval.features.wifi.data.mapper.sortByDistance
-import eu.javimar.wirelessval.features.wifi.domain.utils.GeoPoint
+import eu.javimar.wirelessval.features.wifi.data.mapper.toLatLng
+import eu.javimar.wirelessval.features.wifi.domain.utils.WifiCoordinates
 import eu.javimar.wirelessval.features.wifi.domain.utils.WifiOrderOptions
 import eu.javimar.wirelessval.sqldelight.Wifis
 import eu.javimar.wirelessval.sqldelight.WirelessVALDatabase
@@ -29,7 +30,7 @@ class WifiLocalDataSource @Inject constructor(db: WirelessVALDatabase) {
 
     fun getAllFallasByOption(
         options: WifiOrderOptions,
-        gps: GeoPoint?
+        gps: WifiCoordinates?
     ): List<Wifis> {
         return when(options) {
             WifiOrderOptions.NAME -> queries.getAllWifisByName().executeAsList()
@@ -38,7 +39,7 @@ class WifiLocalDataSource @Inject constructor(db: WirelessVALDatabase) {
             WifiOrderOptions.DISTANCE -> {
                 var fallas = queries.getAllWifisByName().executeAsList()
                 gps?.let {
-                    fallas = fallas.sortByDistance(it)
+                    fallas = fallas.sortByDistance(it.toLatLng())
                 }
                 fallas
             }

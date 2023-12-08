@@ -136,7 +136,7 @@ dependencies {
     // Serialization
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1")
 
-    // SQLDELIGTH
+    // SQLDELIGHT
     implementation("app.cash.sqldelight:android-driver:2.0.0")
 
     // KTOR
