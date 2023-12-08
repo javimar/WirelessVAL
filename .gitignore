@@ -46,6 +46,7 @@ build/
 
 app/.gitignore
 
+app/google-services.json
 #NDK
 obj/
 
