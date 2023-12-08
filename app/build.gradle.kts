@@ -154,30 +154,4 @@ dependencies {
     implementation(platform("com.google.firebase:firebase-bom:32.5.0"))
     implementation("com.google.firebase:firebase-crashlytics-ktx")
     implementation("com.google.firebase:firebase-analytics-ktx")
-
-
-
-
-
-
-
-
-
-
-
-    // PARA BORRAR
-    implementation("androidx.appcompat:appcompat:1.6.1")
-    implementation("com.google.android.material:material:1.8.0")
-    // Lifecycle components
-    implementation("androidx.lifecycle:lifecycle-extensions:2.2.0")
-    //noinspection LifecycleAnnotationProcessorWithJava8
-    annotationProcessor("androidx.lifecycle:lifecycle-compiler:2.6.2")
-    // Room
-    implementation("androidx.room:room-runtime:2.6.1")
-    annotationProcessor("androidx.room:room-compiler:2.6.1")
-    implementation("androidx.constraintlayout:constraintlayout:2.1.4")
-    implementation ("androidx.legacy:legacy-support-v4:1.0.0")
-    implementation ("androidx.palette:palette:1.0.0")
-    implementation ("com.github.GrenderG:Toasty:1.4.2")
-    implementation ("com.squareup.okhttp3:okhttp:4.12.0")
 }

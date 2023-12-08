@@ -23,82 +23,19 @@
         tools:ignore="AllowBackup,GoogleAppIndexingWarning,UnusedAttribute">
 
         <activity
-            android:name=".MainActivity"
+            android:name=".features.main.presentation.MainActivity"
             android:launchMode="singleTop"
             android:exported="true"
-            android:theme="@style/AppTheme.NoActionBar" >
+            android:theme="@style/AppTheme">
             <intent-filter>
-                <action android:name="android.intent.action.SEARCH" />
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-            <meta-data
-                android:name="android.app.searchable"
-                android:resource="@xml/searchable"/>
         </activity>
-
-        <activity
-            android:name=".view.DetailActivity"
-            android:exported="false"
-            android:parentActivityName="eu.javimar.wirelessval.MainActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="eu.javimar.wirelessval.MainActivity" />
-        </activity>
-
-        <activity
-            android:name=".view.MapWifis"
-            android:exported="false"
-            android:parentActivityName="eu.javimar.wirelessval.MainActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="eu.javimar.wirelessval.MainActivity" />
-        </activity>
-
-        <activity
-            android:name=".view.PanoramaActivity"
-            android:exported="false"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:parentActivityName=".view.MapWifis">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".view.MapWifis" />
-        </activity>
-
-        <activity
-            android:name=".SettingsActivity"
-            android:exported="false"
-            android:label="@string/title_settings"
-            android:parentActivityName=".MainActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="eu.javimar.wirelessval.MainActivity" />
-        </activity>
-
-        <activity
-            android:name=".view.AboutActivity"
-            android:exported="false"
-            android:label="@string/title_about_activity"
-            android:parentActivityName=".MainActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="eu.javimar.wirelessval.MainActivity" />
-        </activity>
-
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="${API_KEY}" />
-
-
-
-<!--         PARA BORRAR-->
-        <meta-data
-            android:name="com.google.android.gms.version"
-            android:value="@integer/google_play_services_version" />
-        <meta-data
-            android:name="preloaded_fonts"
-            android:resource="@array/preloaded_fonts" />
 
     </application>
 

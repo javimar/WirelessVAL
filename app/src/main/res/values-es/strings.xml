@@ -2,12 +2,28 @@
 
     <string name="app_name">Wifi Valencia</string>
 
+    <!-- Nav names -->
+    <string name="nav_home">Mis Wifis</string>
+    <string name="nav_map">Mapa</string>
+    <string name="nav_info">Info</string>
+
+    <!-- DIALOG LABELS -->
+    <string name="dialog_refresh_button_ok">Recargar</string>
+    <string name="dialog_button_cancel">Cancelar</string>
+    <string name="dialog_refresh_title">¿Recargar Wifis?</string>
+    <string name="dialog_refresh_confirmation">Esta acción borrará la lista actual de Wifis y las volverá a cargar de nuevo.\n\nTus opiniones no se borran a menos que las borres tú</string>
+    <string name="dialog_button_ok">Sí</string>
+    <string name="dialog_delete">Esta acción borrará la Wifi actual</string>
+
+    <!-- SEARCH LABELS -->
+    <string name="search_label">Buscar Wifis</string>
+
     <!-- MENU -->
     <string name="menu_settings">Ajustes</string>
     <string name="menu_delete">Borrar WiFi</string>
     <string name="menu_about">Acerca de</string>
     <string name="menu_save">Guardar Wi-Fi</string>
-    <string name="menu_load">Cargar nuevas Wi-Fis</string>
+    <string name="menu_load">Recargar Wi-Fis</string>
 
     <!-- ERROR -->
     <string name="no_internet_connection">No hay conexión a Internet</string>
@@ -20,14 +36,13 @@
     <string name="deletedString">¡Borrada!</string>
     <string name="undoString">¿Deshacer?</string>
 
-    <!-- ACTIVITY NAMES -->
+    <!-- NAMES -->
     <string name="title_editor_activity">Editar WiFi</string>
     <string name="title_mapa_activity">Mapa de WiFis</string>
-    <string name="title_streetview_activity">Vista de calle</string>
     <string name="title_settings">Ajustes</string>
     <string name="title_about_activity">Acerca de Wi-Fi VLC</string>
 
-    <!-- FRAGMENT DETAIL -->
+    <!-- DETAIL -->
     <string name="fragment_detail_update_ok">WiFi actualizada</string>
     <string name="fragment_detail_changes_delete_confirmation">¿Estás segur@ que quieres borrar este red?</string>
     <string name="fragment_detail_empty">Haz clic en la red para ver el detalle</string>
@@ -35,28 +50,38 @@
 
     <!-- PERMISSION -->
     <string name="permission_location">Necesito el permiso de ubicación para funcionar bien</string>
+    <string name="permission_gps">Por favor active la ubicación por GPS</string>
+    <string name="dialog_access_location_title">Ajustes de ubicación</string>
+    <string name="dialog_access_location">Abrir ajustes de ubicación</string>
 
     <!-- Strings sorting Preference -->
     <string name="settings_sort_criteria">Criterio de ordenación</string>
     <string name="settings_sort_by_name_label">Ordenar por nombre</string>
     <string name="settings_sort_by_distance_label">Ordenar por distancia</string>
     <string name="settings_sort_by_opinion_label">Ordenar por opinión</string>
+    <string name="pref_app_settings_label">Ajustes de colores</string>
+    <string name="pref_app_settings_color_dynamic">Dinámico</string>
+    <string name="pref_app_settings_scheme_appcolors">Colores de la app</string>
+    <string name="pref_app_settings_scheme_caption1">Android 13 y superior</string>
+    <string name="pref_app_settings_scheme_caption2">Resto de versiones</string>
+    <string name="pref_app_settings_scheme_light">Claro</string>
+    <string name="pref_app_settings_scheme_dark">Oscuro</string>
 
-    <!-- ABOUT -->
-    <string name="about_data_updated">Última actualización: %s</string>
-    <string name="about_info_name">WiFi Valencia</string>
-    <string name="about_info_text">Versión %s\n\nFuente de los datos: Ajuntament de València – Dades Obertes</string>
+    <!-- ABOUT PAGE -->
+    <string name="about_data_version">Versión: %s</string>
+    <string name="about_data_from">Fuente de los datos:\nAjuntament de València – Dades Obertes</string>
+    <string name="about_data_updated">Última actualización:\n%s</string>
+    <string name="about_copy">Aplicación desarrollada por JaviMar</string>
+    <string name="about_instructions">Esta aplicación muestra todas las Wifis públicas de la ciudad de Valencia.\n\nPuedes valorar cada red inalámbrica para saber su calidad en futuras visitas.</string>
 
-    <!-- CONTENT DESCRIPTION STRINGS -->
-    <string name="cd_heart_image">Imagen de un corazón</string>
-    <string name="cd_about_image">Imagen del logo de la applicación. Una taza de wifi</string>
-    <string name="cd_vlc_image">Imagen de la ciudad de Valencia</string>
-    <string name="cd_logo_author">Imagen del logo del autor</string>
+    <!-- MAP NAVIGATION LABELS -->
+    <string name="geo_take_me">¡Estoy aquí!</string>
+    <string name="geo_choose_intent">Navegar a %1$s</string>
+
     <string name="err_loading_wifis">No se cargaron WIFIs debido a problemas con el servidor externo. Por favor, inténtalo más tarde.</string>
     <string name="menu_map">Ver en Mapa</string>
-    <string name="menu_search">Buscar Redes</string>
-    <string name="search_hint">Buscar Redes</string>
     <string name="wifiDeleted">Wifi borrada</string>
 
+    <string name="wifis_empty">Se siente cierta soledad por aquí. ¿Por qué no cargas las Wifis?</string>
 
 </resources>

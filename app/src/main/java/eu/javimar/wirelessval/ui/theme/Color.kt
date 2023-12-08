@@ -64,7 +64,6 @@ val md_theme_dark_surfaceTint = Color(0xFF78DC77)
 val md_theme_dark_outlineVariant = Color(0xFF424940)
 val md_theme_dark_scrim = Color(0xFF000000)
 
-
 val seed = Color(0xFF4CAF50)
 val colorOpinion5 = Color(0xFF00C853)
 val colorOpinion4 = Color(0xFF81C784)
@@ -72,3 +71,25 @@ val colorOpinion3 = Color(0xFF80d8ff)
 val colorOpinion2 = Color(0xFF9fa8da)
 val colorOpinion1 = Color(0xFFff7043)
 val colorOpinion0 = Color(0xFFd50000)
+
+
+// SEMANTIC COLORS
+val Positive10 = Color(0xFFDDF3EE)
+val Positive20 = Color(0xFFB3E1D7)
+val Positive30 = Color(0xFF51BAA5)
+val Positive40 = Color(0xFF2CAB92)
+val Positive50 = Color(0xFF098E74)
+val Positive60 = Color(0xFF088068)
+val Positive70 = Color(0xFF07725D)
+val Positive80 = Color(0xFF066351)
+val Positive90 = Color(0xFF055546)
+
+val Negative10 = Color(0xFFFAE2E6)
+val Negative20 = Color(0xFFEFA3B0)
+val Negative30 = Color(0xFFE45E74)
+val Negative40 = Color(0xFFDC304C)
+val Negative50 = Color(0xFF931D25)
+val Negative60 = Color(0xFFB91F39)
+val Negative70 = Color(0xFF90182C)
+val Negative80 = Color(0xFF7C1526)
+val Negative90 = Color(0xFF67111F)
