@@ -5,6 +5,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import eu.javimar.wirelessval.features.wifi.data.WifiRepository
+import eu.javimar.wirelessval.features.wifi.data.local.datasource.WifiLocalDataSource
 import eu.javimar.wirelessval.features.wifi.data.remote.datasource.WifiRemoteDataSource
 import javax.inject.Singleton
 
@@ -15,10 +16,10 @@ object RepositoryModule {
     @Provides
     @Singleton
     fun provideWifiRepository(
-        //localDataSource: FallaLocalDataSource,
+        localDataSource: WifiLocalDataSource,
         remoteDataSource: WifiRemoteDataSource
     ): WifiRepository = WifiRepository(
-        //localDataSource,
+        localDataSource,
         remoteDataSource
     )
 }

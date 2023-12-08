@@ -1,0 +1,40 @@
+CREATE TABLE IF NOT EXISTS wifis (
+    wifiName TEXT NOT NULL,
+    latitude REAL NOT NULL,
+    longitude REAL NOT NULL,
+    comments TEXT,
+    opinion REAL NOT NULL,
+    PRIMARY KEY(`wifiName`, `latitude`, `longitude`)
+);
+
+insertWifis:
+INSERT OR REPLACE INTO wifis (
+    wifiName, latitude, longitude, comments, opinion
+) VALUES (?,?,?,?,?);
+
+getAllWifisByName:
+SELECT * FROM wifis ORDER BY wifiName ASC;
+
+getAllWifisByOpinion:
+SELECT * FROM wifis ORDER BY opinion DESC;
+
+findWifi:
+SELECT * FROM wifis WHERE wifiName = ? AND longitude = ? AND latitude = ?;
+
+getCountNumberOfRows:
+SELECT COUNT(wifiName) FROM wifis;
+
+updateOpinionComments:
+UPDATE wifis SET opinion = ?, comments = ? WHERE wifiName= ? AND longitude = ? AND latitude = ?;
+
+deleteWifi:
+DELETE FROM wifis WHERE wifiName = ? AND latitude = ? AND longitude = ?;
+
+deleteAllWifis:
+DELETE FROM wifis;
+
+getSearchResults:
+SELECT * FROM wifis WHERE wifiName LIKE '%' || ? || '%' ORDER BY wifiName ASC;
+
+checkIfWifiInDatabase:
+SELECT COUNT(*) FROM wifis WHERE wifiName = ? AND latitude = ? AND longitude = ?;
