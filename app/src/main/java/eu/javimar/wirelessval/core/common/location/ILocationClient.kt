@@ -1,4 +1,4 @@
-package eu.javimar.myfallasguide.core.location
+package eu.javimar.wirelessval.core.common.location
 
 import android.location.Location
 import kotlinx.coroutines.flow.Flow

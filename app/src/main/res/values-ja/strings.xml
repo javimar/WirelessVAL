@@ -1,0 +1,70 @@
+<resources>
+
+    <string name="app_name">ワイヤレス バレンシア</string>
+
+    <!-- Nav names -->
+    <string name="nav_home">私のWi-Fi</string>
+    <string name="nav_map">地図</string>
+    <string name="nav_info">情報</string>
+
+    <!-- DIALOG LABELS -->
+    <string name="dialog_refresh_button_ok">リロード</string>
+    <string name="dialog_button_cancel">キャンセル</string>
+    <string name="dialog_refresh_title">Wifiをリロードしますか?</string>
+    <string name="dialog_refresh_confirmation">これにより、Wifi の現在のリストが削除され、再度リロードされます。.\n\nあなたの意見は保存されます</string>
+
+    <string name="dialog_button_ok">はい</string>
+
+    <!-- SEARCH LABELS -->
+    <string name="search_label">ワイヤレスネットワークの検索</string>
+
+    <!-- MENU -->
+    <string name="menu_settings">設定</string>
+    <string name="menu_load">Wi-Fiをリロードする</string>
+
+    <!-- ERROR -->
+    <string name="no_internet_connection">インターネット接続がありません</string>
+    <string name="err_loading_wifis">ワイヤレス ネットワークがロードされていません。これは外部サーバーの問題が原因です。後でもう一度試してください。</string>
+
+    <!-- NAMES -->
+    <string name="title_mapa_activity">ワイヤレスネットワーク</string>
+    <string name="title_settings">Wi-Fi設定</string>
+    <string name="title_about_activity">Wi-Fi バレンシアについて</string>
+
+    <!-- DETAIL -->
+    <string name="detail_comments">この Wi-Fi に関するコメント</string>
+
+    <!-- PERMISSION -->
+    <string name="permission_location">適切に動作するには位置情報の許可が必要です</string>
+    <string name="permission_gps">GPS接続をオンにしてください</string>
+    <string name="dialog_access_location_title">位置情報の設定</string>
+    <string name="dialog_access_location">位置情報設定を開く</string>
+
+    <!-- Strings sorting Preference -->
+    <string name="settings_sort_criteria">並べ替え基準</string>
+    <string name="settings_sort_by_name_label">名前順</string>
+    <string name="settings_sort_by_distance_label">距離順に並べ替える</string>
+    <string name="settings_sort_by_opinion_label">意見ごとに並べ替える</string>
+    <string name="pref_app_settings_label">アプリの色</string>
+    <string name="pref_app_settings_color_dynamic">動的</string>
+    <string name="pref_app_settings_scheme_appcolors">アプリの色</string>
+    <string name="pref_app_settings_scheme_caption1">Android 13以降</string>
+    <string name="pref_app_settings_scheme_caption2">残りのバージョン</string>
+    <string name="pref_app_settings_scheme_light">ライト</string>
+    <string name="pref_app_settings_scheme_dark">暗い</string>
+
+    <!-- MAP NAVIGATION LABELS -->
+    <string name="geo_take_me">私はここにいます！</string>
+
+    <!-- ABOUT PAGE -->
+    <string name="about_data_version">バージョン：%s</string>
+    <string name="about_data_from">提供データ\nAjuntament de València – Dades Obertes</string>
+    <string name="about_data_updated">最終更新：\n%s</string>
+    <string name="about_copy">ハビエル・マルティンが開発したアプリ</string>
+    <string name="about_instructions">このアプリは、バレンシア都市圏にあるすべての公衆無線ネットワークを表示します。\n\n内部使用のために各ワイヤレス ネットワークを評価し、コメントを追加できます。</string>
+
+    <string name="wifis_empty">ここはちょっと寂しいですね。 Wi-Fi をロードしてみませんか?</string>
+    <string name="distance_meters_label">%s メートル</string>
+    <string name="distance_km_label" translatable="false">%s キロメートル</string>
+
+</resources>

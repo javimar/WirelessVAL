@@ -26,7 +26,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.tooling.preview.Wallpapers
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
@@ -109,7 +108,7 @@ fun WifiAboutScreen(
                             textAlign = TextAlign.Center,
                         )
                         Image(
-                            painterResource(id = R.drawable.applogo),
+                            painterResource(id = R.drawable.wifi_val),
                             modifier = Modifier
                                 .height(96.dp)
                                 .align(Alignment.CenterHorizontally),
@@ -145,7 +144,7 @@ fun WifiAboutScreen(
         })
 }
 
-@Preview(wallpaper = Wallpapers.YELLOW_DOMINATED_EXAMPLE, showBackground = true)
+@Preview(showBackground = true, locale = "ja")
 @Composable
 fun AboutPreview() {
     WifiAboutScreen(

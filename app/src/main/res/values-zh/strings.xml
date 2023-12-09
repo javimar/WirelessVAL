@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">瓦伦西亚无线</string>
+
+    <!-- Nav names -->
+    <string name="nav_home">我的无线网络</string>
+    <string name="nav_map">地图</string>
+    <string name="nav_info">信息</string>
+
+    <!-- DIALOG LABELS -->
+    <string name="dialog_refresh_button_ok">重新加载</string>
+    <string name="dialog_button_cancel">取消</string>
+    <string name="dialog_refresh_title">重新加载无线网络？</string>
+    <string name="dialog_refresh_confirmation">这将删除当前的无线网络列表并再次重新加载它们.\n\n您的意见将被保留</string>
+
+    <string name="dialog_button_ok">是的</string>
+
+    <!-- SEARCH LABELS -->
+    <string name="search_label">搜索无线网络</string>
+
+    <!-- MENU -->
+    <string name="menu_settings">设置</string>
+    <string name="menu_load">重新加载无线网络</string>
+
+    <!-- ERROR -->
+    <string name="no_internet_connection">没有互联网连接</string>
+    <string name="err_loading_wifis">未加载无线网络. 这是由于外部服务器问题造成的。请稍后再试！</string>
+
+    <!-- NAMES -->
+    <string name="title_mapa_activity">无线网络</string>
+    <string name="title_settings">无线网络设置</string>
+    <string name="title_about_activity">关于瓦伦西亚无线酒店</string>
+
+    <!-- DETAIL -->
+    <string name="detail_comments">您对此的评论</string>
+
+    <!-- PERMISSION -->
+    <string name="permission_location">我需要位置权限才能正常工作</string>
+    <string name="permission_gps">请打开 GPS 连接</string>
+    <string name="dialog_access_location_title">位置设置</string>
+    <string name="dialog_access_location">打开位置设置</string>
+
+    <!-- Strings sorting Preference -->
+    <string name="settings_sort_criteria">排序标准</string>
+    <string name="settings_sort_by_name_label">按名称分类</string>
+    <string name="settings_sort_by_distance_label">按距离排序</string>
+    <string name="settings_sort_by_opinion_label">按意见排序</string>
+    <string name="pref_app_settings_label">应用程序颜色</string>
+    <string name="pref_app_settings_color_dynamic">动态的</string>
+    <string name="pref_app_settings_scheme_appcolors">应用程序颜色</string>
+    <string name="pref_app_settings_scheme_caption1">安卓13及以上</string>
+    <string name="pref_app_settings_scheme_caption2">其余版本</string>
+    <string name="pref_app_settings_scheme_light">光</string>
+    <string name="pref_app_settings_scheme_dark">黑暗的</string>
+
+    <!-- MAP NAVIGATION LABELS -->
+    <string name="geo_take_me">我在这里！</string>
+
+    <!-- ABOUT PAGE -->
+    <string name="about_data_version">版本： %s</string>
+    <string name="about_data_from">数据提供者\nAjuntament de València – Dades Obertes</string>
+    <string name="about_data_updated">最近更新时间：\n%s</string>
+    <string name="about_copy">应用程序开发者 哈维尔·马丁</string>
+    <string name="about_instructions">该应用程序向您显示位于瓦伦西亚大都市区的所有公共无线网络.\n\n您可以对每个无线网络进行评分并添加评论以供内部使用。</string>
+
+    <string name="wifis_empty">这里有点偏僻。为什么不加载一些无线网络？</string>
+    <string name="distance_meters_label">%s 米</string>
+    <string name="distance_km_label" translatable="false">%s 公里</string>
+
+</resources>

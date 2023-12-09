@@ -5,7 +5,6 @@ import android.content.Intent
 import android.os.IBinder
 import com.google.android.gms.location.LocationServices
 import dagger.hilt.android.AndroidEntryPoint
-import eu.javimar.myfallasguide.core.location.ILocationClient
 import eu.javimar.wirelessval.features.settings.domain.repository.IPreferencesRepository
 import eu.javimar.wirelessval.features.settings.domain.utils.SharePrefsKeys.LOCATION_KEY
 import kotlinx.coroutines.CoroutineScope

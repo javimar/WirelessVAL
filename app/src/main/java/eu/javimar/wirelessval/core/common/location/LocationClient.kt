@@ -9,7 +9,6 @@ import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.Priority
-import eu.javimar.myfallasguide.core.location.ILocationClient
 import eu.javimar.wirelessval.R
 import eu.javimar.wirelessval.core.common.hasLocationEnabled
 import eu.javimar.wirelessval.core.common.hasLocationPermission
