@@ -74,9 +74,6 @@ android {
 
     buildFeatures {
         compose = true
-
-        // TO DELETE
-        viewBinding = true
     }
 
     composeOptions {
