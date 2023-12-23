@@ -21,8 +21,8 @@ fun WifiDto.toWifiBO(): WifiBO {
 
 fun GeoPointDto?.toGeoPoint(): WifiCoordinates {
     return WifiCoordinates(
+        latitude = this?.latitude ?: 0.0,
         longitude = this?.longitude ?: 0.0,
-        latitude = this?.latitude ?: 0.0
     )
 }
 

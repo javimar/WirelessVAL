@@ -3,7 +3,6 @@ package eu.javimar.wirelessval.features.settings.presentation
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import dagger.hilt.android.lifecycle.HiltViewModel
 import eu.javimar.wirelessval.core.common.presentation.BaseViewModel
 import eu.javimar.wirelessval.core.util.UIEvent
 import eu.javimar.wirelessval.features.settings.domain.repository.IPreferencesRepository
@@ -14,10 +13,8 @@ import eu.javimar.wirelessval.features.settings.presentation.state.WifiSettingsE
 import eu.javimar.wirelessval.features.settings.presentation.state.WifiSettingsState
 import eu.javimar.wirelessval.features.wifi.domain.utils.WifiOrderOptions
 import eu.javimar.wirelessval.features.wifi.domain.utils.getOrderOptionFromValue
-import javax.inject.Inject
 
-@HiltViewModel
-class WifisSettingsViewModel @Inject constructor(
+class WifisSettingsViewModel(
     private val sharePrefs: IPreferencesRepository,
 ): BaseViewModel() {
 

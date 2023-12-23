@@ -4,7 +4,8 @@ import eu.javimar.wirelessval.R
 import eu.javimar.wirelessval.core.util.Resource
 import eu.javimar.wirelessval.core.util.UIText
 import eu.javimar.wirelessval.features.wifi.domain.model.WifiBO
-import eu.javimar.wirelessval.features.wifi.domain.repository.IWifiRepository
+import eu.javimar.wirelessval.features.wifi.domain.repository.IWifiLocalRepository
+import eu.javimar.wirelessval.features.wifi.domain.repository.IWifiRemoteRepository
 import eu.javimar.wirelessval.features.wifi.domain.utils.WifiCoordinates
 import eu.javimar.wirelessval.features.wifi.domain.utils.WifiOrderOptions
 import kotlinx.coroutines.Dispatchers
@@ -12,10 +13,10 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import java.io.IOException
-import javax.inject.Inject
 
-class GetWifisUseCase @Inject constructor(
-    private val repository: IWifiRepository
+class GetWifisUseCase (
+    private val localRepo: IWifiLocalRepository,
+    private val remoteRepo: IWifiRemoteRepository,
 ) {
     fun execute(
         limit: Int = -1,
@@ -26,29 +27,29 @@ class GetWifisUseCase @Inject constructor(
         var isFirstLoading = false
         emit(Resource.Loading())
 
-        var fallasLocal = listOf<WifiBO>()
+        var wifisLocal = listOf<WifiBO>()
 
-        val isDbEmpty = repository.countNumberOfRows() <= 0
+        val isDbEmpty = localRepo.countNumberOfRows() <= 0
 
         try {
             if(isDbEmpty) {
-                val fallasRemote = repository.getWifisFromServer(limit = limit)
-                repository.insertWifis(fallasRemote)
+                val wifisRemote = remoteRepo.getWifisFromServer(limit = limit)
+                localRepo.insertWifis(wifisRemote)
                 isFirstLoading = true
             } else {
-                fallasLocal = repository.getAllWifisByOption(orderOptions, gps)
+                wifisLocal = localRepo.getAllWifisByOption(orderOptions, gps)
                 isFirstLoading = false
-                emit(Resource.Loading(data = fallasLocal))
+                emit(Resource.Loading(data = wifisLocal))
             }
         } catch (e: IOException) {
             emit(Resource.Error(
                 message = UIText.StringResource(R.string.err_loading_wifis),
-                data = fallasLocal))
+                data = wifisLocal))
         }
 
-        val fallas = repository.getAllWifisByOption(orderOptions, gps)
+        val wifis = localRepo.getAllWifisByOption(orderOptions, gps)
 
-        emit(Resource.Success(fallas, isFirstLoading))
+        emit(Resource.Success(wifis, isFirstLoading))
 
     }.flowOn(Dispatchers.IO)
 }

@@ -13,11 +13,9 @@ val datedVersionCode: Int = generateVersionCode()
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.kotlinAndroid)
-    alias(libs.plugins.hilt.android)
-    alias(libs.plugins.kotlinSerialization)
     alias(libs.plugins.secrets.gradle.plugin)
     alias(libs.plugins.sqldelight.plugin)
-    alias(libs.plugins.google.ksp)
+    alias(libs.plugins.kotlin.serialization.plugin)
     id("com.google.gms.google-services")
     id("com.google.firebase.crashlytics")
 }
@@ -103,13 +101,9 @@ dependencies {
     implementation(libs.compose.ui.tooling)
     implementation(libs.compose.material3)
     implementation(libs.compose.icons.extended)
-    //debugImplementation("androidx.compose.ui:ui-test-manifest")
+    implementation(libs.compose.nav)
 
     implementation(libs.androidx.lifecycle)
-
-    implementation(libs.hilt.android)
-    ksp(libs.hilt.compiler)
-    implementation(libs.androidx.hilt.navigation.compose)
 
     implementation(libs.accompanist.permissions)
 

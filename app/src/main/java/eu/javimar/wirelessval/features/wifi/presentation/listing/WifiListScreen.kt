@@ -213,7 +213,7 @@ fun WifiListScreen(
 
 @Preview(showBackground = true)
 @Composable
-fun FallaListPreview() {
+fun WifisListPreview() {
     WifiListScreen(
         state = WifiState(
             wifis = listOf(wifiBOMock)

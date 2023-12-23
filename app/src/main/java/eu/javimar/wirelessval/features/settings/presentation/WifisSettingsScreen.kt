@@ -119,7 +119,7 @@ fun WifisSettingsScreen(
 
 @Preview(showBackground = true)
 @Composable
-fun FallaSettingsPreview() {
+fun WifisSettingsPreview() {
     WifisSettingsScreen(
         state = WifiSettingsState(
             orderOptions = WifiOrderOptions.DISTANCE

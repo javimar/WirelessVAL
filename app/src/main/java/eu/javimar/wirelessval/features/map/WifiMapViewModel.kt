@@ -5,7 +5,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.viewModelScope
 import com.google.android.gms.maps.model.LatLng
-import dagger.hilt.android.lifecycle.HiltViewModel
 import eu.javimar.wirelessval.core.common.presentation.BaseViewModel
 import eu.javimar.wirelessval.core.nav.screens.Screens
 import eu.javimar.wirelessval.core.util.Resource
@@ -21,10 +20,8 @@ import eu.javimar.wirelessval.features.wifi.presentation.listing.state.WifiState
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
-@HiltViewModel
-class WifiMapViewModel @Inject constructor(
+class WifiMapViewModel(
     private val preferences: IPreferencesRepository,
     private val getWifisUseCase: GetWifisUseCase
 ): BaseViewModel() {

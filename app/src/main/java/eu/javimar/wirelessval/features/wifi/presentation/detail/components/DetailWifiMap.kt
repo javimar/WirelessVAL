@@ -30,9 +30,9 @@ fun DetailWifiMap(
     name: String
 ) {
     val context = LocalContext.current
-    val fallaLocation = LatLng(lat, long)
+    val wifiLocation = LatLng(lat, long)
     val cameraPositionState = rememberCameraPositionState {
-        position = CameraPosition.fromLatLngZoom(fallaLocation, 19f)
+        position = CameraPosition.fromLatLngZoom(wifiLocation, 19f)
     }
     Card(
         shape = RoundedCornerShape(24.dp),
@@ -74,7 +74,7 @@ fun DetailWifiMap(
 
 @Preview
 @Composable
-fun DetailFallaMapPreview() {
+fun DetailwifiMapPreview() {
     DetailWifiMap(
         lat = 0.0,
         long = 0.0,

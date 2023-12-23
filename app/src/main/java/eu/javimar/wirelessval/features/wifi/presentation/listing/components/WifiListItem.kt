@@ -67,7 +67,7 @@ fun WifiListItem(
 
 @Preview(showBackground = true)
 @Composable
-fun FallaListItemPreview() {
+fun WifiListItemPreview() {
     WifiListItem(
         wifi = wifiBOMock,
         onWifiClick = {},

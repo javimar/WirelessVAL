@@ -59,7 +59,7 @@ fun WifisMainMenu(
 
 @Preview(showBackground = true)
 @Composable
-fun FallasMenuPreview() {
+fun WifisMenuPreview() {
     WifisMainMenu(
         expanded = true,
         onSettingsClick = {},

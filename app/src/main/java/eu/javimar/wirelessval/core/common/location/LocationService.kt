@@ -4,8 +4,7 @@ import android.app.Service
 import android.content.Intent
 import android.os.IBinder
 import com.google.android.gms.location.LocationServices
-import dagger.hilt.android.AndroidEntryPoint
-import eu.javimar.wirelessval.features.settings.domain.repository.IPreferencesRepository
+import eu.javimar.wirelessval.WirelessValApp.Companion.prefsModule
 import eu.javimar.wirelessval.features.settings.domain.utils.SharePrefsKeys.LOCATION_KEY
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -14,13 +13,10 @@ import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import javax.inject.Inject
 
-@AndroidEntryPoint
 class LocationService: Service() {
 
-    @Inject
-    lateinit var sharePrefs: IPreferencesRepository
+    private val sharePrefs = prefsModule.sharePrefs
 
     private val serviceScope = CoroutineScope((SupervisorJob() + Dispatchers.IO))
     private lateinit var locationClient: ILocationClient

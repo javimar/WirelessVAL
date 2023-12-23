@@ -5,7 +5,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
-import dagger.hilt.android.lifecycle.HiltViewModel
 import eu.javimar.wirelessval.core.common.presentation.BaseViewModel
 import eu.javimar.wirelessval.core.nav.screens.WifiNavArgs
 import eu.javimar.wirelessval.core.util.UIEvent
@@ -14,10 +13,8 @@ import eu.javimar.wirelessval.features.wifi.domain.usecase.UpdateWifiUseCase
 import eu.javimar.wirelessval.features.wifi.presentation.detail.state.WifiDetailEvent
 import eu.javimar.wirelessval.features.wifi.presentation.detail.state.WifiDetailState
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
-@HiltViewModel
-class WifiDetailViewModel @Inject constructor(
+class WifiDetailViewModel(
     savedStateHandle: SavedStateHandle,
     private val updateWifiUseCase: UpdateWifiUseCase
 ): BaseViewModel() {

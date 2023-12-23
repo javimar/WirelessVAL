@@ -5,7 +5,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.viewModelScope
 import com.google.android.gms.maps.model.LatLng
-import dagger.hilt.android.lifecycle.HiltViewModel
 import eu.javimar.wirelessval.R
 import eu.javimar.wirelessval.core.common.presentation.BaseViewModel
 import eu.javimar.wirelessval.core.nav.screens.Screens
@@ -33,10 +32,8 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
-import javax.inject.Inject
 
-@HiltViewModel
-class WifiListViewModel @Inject constructor(
+class WifiListViewModel(
     private val getWifisUseCase: GetWifisUseCase,
     private val reloadWifisUseCase: ReloadFromServerUseCase,
     private val searchWifisUseCase: SearchWifisUseCase,
