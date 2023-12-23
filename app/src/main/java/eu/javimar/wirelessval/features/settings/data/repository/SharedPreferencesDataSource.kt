@@ -1,6 +1,5 @@
 package eu.javimar.wirelessval.features.settings.data.repository
 
-import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
 import eu.javimar.wirelessval.features.settings.domain.repository.IPreferencesRepository
@@ -12,7 +11,7 @@ import kotlinx.coroutines.flow.buffer
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.flow
 
-class SharedPreferencesDataSource(val context: Application): IPreferencesRepository {
+class SharedPreferencesDataSource(val context: Context): IPreferencesRepository {
 
     companion object {
         private const val MY_WIFIS_SHARED_PREFS = "my_wifis_preferences"
