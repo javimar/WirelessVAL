@@ -4,13 +4,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
-import dagger.hilt.android.lifecycle.HiltViewModel
 import eu.javimar.wirelessval.features.settings.domain.repository.IPreferencesRepository
 import eu.javimar.wirelessval.features.settings.domain.utils.SharePrefsKeys.LAST_UPDATED_KEY
-import javax.inject.Inject
 
-@HiltViewModel
-class WifiAboutViewModel @Inject constructor(
+class WifiAboutViewModel(
     private val sharedPrefs: IPreferencesRepository,
 ): ViewModel() {
 

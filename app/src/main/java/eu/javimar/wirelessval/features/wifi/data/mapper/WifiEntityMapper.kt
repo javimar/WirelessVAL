@@ -1,6 +1,5 @@
 package eu.javimar.wirelessval.features.wifi.data.mapper
 
-import com.google.android.gms.maps.model.LatLng
 import eu.javimar.wirelessval.features.wifi.domain.model.WifiBO
 import eu.javimar.wirelessval.features.wifi.domain.utils.WifiCoordinates
 import eu.javimar.wirelessval.sqldelight.Wifis
@@ -20,15 +19,15 @@ fun Wifis.toWifiBO(): WifiBO =
         opinion = opinion
     )
 
-fun List<Wifis>.sortByDistance(gps: LatLng): List<Wifis> {
+fun List<WifiBO>.sortByDistance(gps: WifiCoordinates): List<WifiBO> {
     return sortedBy {
-        val lat = it.latitude
-        val lng = it.longitude
-        calculateDistance(gps, LatLng(lat, lng))
+        val lat = it.coordinates.latitude
+        val lng = it.coordinates.longitude
+        calculateDistance(gps, WifiCoordinates(lat, lng))
     }.map { it }
 }
 
-private fun calculateDistance(point1: LatLng, point2: LatLng): Double {
+private fun calculateDistance(point1: WifiCoordinates, point2: WifiCoordinates): Double {
     val latDiff = point2.latitude - point1.latitude
     val lonDiff = point2.longitude - point1.longitude
     return sqrt(latDiff.pow(2) + lonDiff.pow(2))

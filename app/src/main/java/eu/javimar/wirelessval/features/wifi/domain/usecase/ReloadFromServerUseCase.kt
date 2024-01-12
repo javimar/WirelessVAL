@@ -4,7 +4,8 @@ import eu.javimar.wirelessval.R
 import eu.javimar.wirelessval.core.util.Resource
 import eu.javimar.wirelessval.core.util.UIText
 import eu.javimar.wirelessval.features.wifi.domain.model.WifiBO
-import eu.javimar.wirelessval.features.wifi.domain.repository.IWifiRepository
+import eu.javimar.wirelessval.features.wifi.domain.repository.IWifiLocalRepository
+import eu.javimar.wirelessval.features.wifi.domain.repository.IWifiRemoteRepository
 import eu.javimar.wirelessval.features.wifi.domain.utils.WifiCoordinates
 import eu.javimar.wirelessval.features.wifi.domain.utils.WifiOrderOptions
 import eu.javimar.wirelessval.features.wifi.domain.utils.updateWifisList
@@ -13,10 +14,10 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import java.io.IOException
-import javax.inject.Inject
 
-class ReloadFromServerUseCase @Inject constructor(
-    private val repository: IWifiRepository,
+class ReloadFromServerUseCase(
+    private val localRepo: IWifiLocalRepository,
+    private val remoteRepo: IWifiRemoteRepository,
 ) {
     fun execute(
         limit: Int = -1,
@@ -26,12 +27,12 @@ class ReloadFromServerUseCase @Inject constructor(
         emit(Resource.Loading())
 
         try {
-            val wifisRemote = repository.getWifisFromServer(limit)
-            val existingWifis = repository
+            val wifisRemote = remoteRepo.getWifisFromServer(limit)
+            val existingWifis = localRepo
                 .getAllWifisByOption(orderOptions, WifiCoordinates(39.4697500, -0.3773900))
             existingWifis.toMutableList().updateWifisList(wifisRemote)
-            repository.deleteAllWifis()
-            repository.insertWifis(existingWifis)
+            localRepo.deleteAllWifis()
+            localRepo.insertWifis(existingWifis)
             emit(Resource.Success(existingWifis, isFirstLoading = true))
         } catch (e: IOException) {
             emit(Resource.Error(

@@ -5,7 +5,7 @@ import eu.javimar.wirelessval.features.wifi.domain.model.WifiBO
 import eu.javimar.wirelessval.features.wifi.domain.utils.WifiCoordinates
 import eu.javimar.wirelessval.sqldelight.Wifis
 
-fun List<WifiBO>?.toFallasList(): List<Wifis> =
+fun List<WifiBO>?.toWifisList(): List<Wifis> =
     this?.map { it.toWifis() }?.toList() ?: run {
         listOf()
     }

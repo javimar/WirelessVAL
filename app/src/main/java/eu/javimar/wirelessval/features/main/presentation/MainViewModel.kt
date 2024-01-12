@@ -5,7 +5,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import dagger.hilt.android.lifecycle.HiltViewModel
 import eu.javimar.wirelessval.core.common.connectivity.ConnectivityObserver
 import eu.javimar.wirelessval.features.main.presentation.state.ColorState
 import eu.javimar.wirelessval.features.settings.domain.repository.IPreferencesRepository
@@ -16,10 +15,8 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
-@HiltViewModel
-class MainViewModel @Inject constructor(
+class MainViewModel(
     private val connectivityObserver: ConnectivityObserver,
     private val sharePrefs: IPreferencesRepository,
 ): ViewModel() {

@@ -58,19 +58,27 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.compose.rememberNavController
-import dagger.hilt.android.AndroidEntryPoint
 import eu.javimar.wirelessval.R
+import eu.javimar.wirelessval.WirelessValApp.Companion.connectivityModule
+import eu.javimar.wirelessval.WirelessValApp.Companion.prefsModule
 import eu.javimar.wirelessval.core.common.changeStatusBarColor
 import eu.javimar.wirelessval.core.common.hasLocationPermission
 import eu.javimar.wirelessval.core.common.location.LocationService
+import eu.javimar.wirelessval.core.common.presentation.viewModelFactory
 import eu.javimar.wirelessval.core.nav.RootNavGraph
 import eu.javimar.wirelessval.features.main.PermissionsSetup
 import eu.javimar.wirelessval.ui.theme.WirelessValTheme
 
-@AndroidEntryPoint
 class MainActivity: ComponentActivity() {
 
-    private val viewModel: MainViewModel by viewModels()
+    private val viewModel: MainViewModel by viewModels {
+        viewModelFactory {
+            MainViewModel(
+                connectivityObserver = connectivityModule.connectivity,
+                sharePrefs = prefsModule.sharePrefs
+            )
+        }
+    }
 
     @RequiresApi(Build.VERSION_CODES.UPSIDE_DOWN_CAKE)
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -2,15 +2,14 @@ package eu.javimar.wirelessval.features.wifi.domain.usecase
 
 import eu.javimar.wirelessval.core.util.Resource
 import eu.javimar.wirelessval.features.wifi.domain.model.WifiBO
-import eu.javimar.wirelessval.features.wifi.domain.repository.IWifiRepository
+import eu.javimar.wirelessval.features.wifi.domain.repository.IWifiLocalRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
-import javax.inject.Inject
 
-class SearchWifisUseCase @Inject constructor(
-    private val repository: IWifiRepository
+class SearchWifisUseCase(
+    private val repository: IWifiLocalRepository
 ) {
     fun execute(
         query: String

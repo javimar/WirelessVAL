@@ -3,13 +3,7 @@ package eu.javimar.wirelessval.di
 import android.content.Context
 import com.chuckerteam.chucker.api.ChuckerCollector
 import com.chuckerteam.chucker.api.ChuckerInterceptor
-import dagger.Module
-import dagger.Provides
-import dagger.hilt.InstallIn
-import dagger.hilt.android.qualifiers.ApplicationContext
-import dagger.hilt.components.SingletonComponent
 import eu.javimar.wirelessval.BuildConfig
-import eu.javimar.wirelessval.features.wifi.data.remote.datasource.WifiRemoteDataSource
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.HttpClientEngine
 import io.ktor.client.engine.okhttp.OkHttp
@@ -25,19 +19,18 @@ import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
 import java.util.concurrent.TimeUnit
 
-@Module
-@InstallIn(SingletonComponent::class)
-object NetworkModule {
+private const val BASE_URL = "https://valencia.opendatasoft.com/"
 
-    private const val BASE_URL = "https://valencia.opendatasoft.com/"
+interface INetworkModule {
+    val networkClient: HttpClient
+}
 
-    @Provides
-    fun provideFallaRemoteDataSource(ktorClient: HttpClient): WifiRemoteDataSource = WifiRemoteDataSource(ktorClient)
-
+class NetworkModule(
+    private val context: Context
+): INetworkModule {
     @OptIn(ExperimentalSerializationApi::class)
-    @Provides
-    fun provideKtorClient(@ApplicationContext context: Context): HttpClient {
-        return HttpClient(provideEngine(context)) {
+    override val networkClient: HttpClient by lazy {
+        HttpClient(provideEngine(context)) {
             expectSuccess = true
             install(Logging) {
                 logger = Logger.ANDROID
@@ -54,14 +47,12 @@ object NetworkModule {
                 url(BASE_URL)
             }
             install(ContentNegotiation) {
-                json(
-                    Json {
-                        prettyPrint = true
-                        isLenient = true
-                        ignoreUnknownKeys = true
-                        explicitNulls = false
-                    }
-                )
+                json(Json {
+                    prettyPrint = true
+                    isLenient = true
+                    ignoreUnknownKeys = true
+                    explicitNulls = false
+                })
             }
         }
     }

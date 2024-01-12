@@ -1,20 +1,23 @@
 package eu.javimar.wirelessval.features.wifi.data.local.datasource
 
 import eu.javimar.wirelessval.features.wifi.data.mapper.sortByDistance
-import eu.javimar.wirelessval.features.wifi.data.mapper.toLatLng
+import eu.javimar.wirelessval.features.wifi.data.mapper.toWifiBO
+import eu.javimar.wirelessval.features.wifi.data.mapper.toWifiBOList
+import eu.javimar.wirelessval.features.wifi.data.mapper.toWifisList
+import eu.javimar.wirelessval.features.wifi.domain.model.WifiBO
+import eu.javimar.wirelessval.features.wifi.domain.repository.IWifiLocalRepository
 import eu.javimar.wirelessval.features.wifi.domain.utils.WifiCoordinates
 import eu.javimar.wirelessval.features.wifi.domain.utils.WifiOrderOptions
-import eu.javimar.wirelessval.sqldelight.Wifis
 import eu.javimar.wirelessval.sqldelight.WirelessVALDatabase
-import javax.inject.Inject
 
-class WifiLocalDataSource @Inject constructor(db: WirelessVALDatabase) {
+class WifiLocalDataSource (db: WirelessVALDatabase): IWifiLocalRepository {
 
     private val queries = db.wifis_tableQueries
 
-    fun insertWifis(wifis: List<Wifis>) {
+    override suspend fun insertWifis(wifis: List<WifiBO>) {
+        val wifisEntity = wifis.toWifisList()
         queries.transaction {
-            wifis.forEach {
+            wifisEntity.forEach {
                 queries.insertWifis(
                     wifiName = it.wifiName,
                     latitude = it.latitude,
@@ -26,44 +29,48 @@ class WifiLocalDataSource @Inject constructor(db: WirelessVALDatabase) {
         }
     }
 
-    fun getAllWifis(): List<Wifis> = queries.getAllWifisByName().executeAsList()
+    override suspend fun getAllWifis(): List<WifiBO> = queries.getAllWifisByName().executeAsList().toWifiBOList()
 
-    fun getAllFallasByOption(
-        options: WifiOrderOptions,
-        gps: WifiCoordinates?
-    ): List<Wifis> {
+    override suspend fun getAllWifisByOption(
+        options: WifiOrderOptions, gps: WifiCoordinates
+    ): List<WifiBO> {
         return when(options) {
-            WifiOrderOptions.NAME -> queries.getAllWifisByName().executeAsList()
-            WifiOrderOptions.OPINION -> queries.getAllWifisByOpinion().executeAsList()
-            WifiOrderOptions.EMPTY -> queries.getAllWifisByName().executeAsList()
+            WifiOrderOptions.NAME -> queries.getAllWifisByName().executeAsList().toWifiBOList()
+            WifiOrderOptions.OPINION -> queries.getAllWifisByOpinion().executeAsList().toWifiBOList()
+            WifiOrderOptions.EMPTY -> queries.getAllWifisByName().executeAsList().toWifiBOList()
             WifiOrderOptions.DISTANCE -> {
-                var fallas = queries.getAllWifisByName().executeAsList()
-                gps?.let {
-                    fallas = fallas.sortByDistance(it.toLatLng())
+                var wifis = queries.getAllWifisByName().executeAsList().toWifiBOList()
+                gps.let {
+                    wifis = wifis.sortByDistance(it)
                 }
-                fallas
+                wifis
             }
         }
     }
 
-    fun findWifi(name: String, longitude: Double, latitude: Double): Wifis =
-        queries.findWifi(name, longitude, latitude).executeAsOne()
-
-    fun countNumberOfRows(): Int = queries.getCountNumberOfRows().executeAsOne().toInt()
-
-    fun deleteWifi(name: String, longitude: Double, latitude: Double) =
-        queries.deleteWifi(name, longitude, latitude)
-
-    fun deleteAllWifis() = queries.deleteAllWifis()
-
-    fun getSearchResults(query: String): List<Wifis> {
-        return queries.getSearchResults(query).executeAsList()
+    override suspend fun findWifi(name: String, gps: WifiCoordinates): WifiBO? {
+        return queries.findWifi(name, gps.longitude, gps.latitude).executeAsOne().toWifiBO()
     }
 
-    fun updateOpinionComments(opinion: Double, comments: String, wifiName: String, longitude: Double, latitude: Double) {
-        queries.updateOpinionComments(opinion, comments, wifiName, longitude, latitude)
+    override suspend fun countNumberOfRows(): Int = queries.getCountNumberOfRows().executeAsOne().toInt()
+
+    override suspend fun deleteWifi(name: String, gps: WifiCoordinates) {
+        queries.deleteWifi(name, gps.longitude, gps.latitude)
     }
 
-    fun checkIfWifiInDb(name: String, longitude: Double, latitude: Double): Int =
-        queries.checkIfWifiInDatabase(name, latitude, longitude).executeAsOne().toInt()
+    override suspend fun deleteAllWifis() = queries.deleteAllWifis()
+
+    override suspend fun getSearchResults(query: String): List<WifiBO> {
+        return queries.getSearchResults(query).executeAsList().toWifiBOList()
+    }
+
+    override fun checkIfWifiInDb(name: String, gps: WifiCoordinates): Int {
+        return queries.checkIfWifiInDatabase(name, gps.latitude, gps.longitude).executeAsOne().toInt()
+    }
+
+    override fun updateOpinionComments(
+        opinion: Double, comments: String, wifiName: String, gps: WifiCoordinates
+    ) {
+        queries.updateOpinionComments(opinion, comments, wifiName, gps.longitude, gps.latitude)
+    }
 }

@@ -1,11 +1,10 @@
 package eu.javimar.wirelessval.features.wifi.domain.usecase
 
 import eu.javimar.wirelessval.features.wifi.domain.model.WifiBO
-import eu.javimar.wirelessval.features.wifi.domain.repository.IWifiRepository
-import javax.inject.Inject
+import eu.javimar.wirelessval.features.wifi.domain.repository.IWifiLocalRepository
 
-class UpdateWifiUseCase @Inject constructor(
-    private val repository: IWifiRepository
+class UpdateWifiUseCase(
+    private val repository: IWifiLocalRepository
 ) {
     fun execute(
         wifi: WifiBO

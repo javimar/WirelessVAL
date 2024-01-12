@@ -9,34 +9,28 @@ fun generateVersionCode(): Int {
 }
 
 val datedVersionCode: Int = generateVersionCode()
-val versionNamePrefix: String by project
-val versionNameSuffix: String by project
-val appId: String by project
-val wirelessValVersion = versionNamePrefix + versionNameSuffix
 
 plugins {
-    id("com.android.application")
-    id("org.jetbrains.kotlin.android")
-    id("dagger.hilt.android.plugin")
-    id("org.jetbrains.kotlin.plugin.serialization")
-    id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
+    alias(libs.plugins.androidApplication)
+    alias(libs.plugins.kotlinAndroid)
+    alias(libs.plugins.secrets.gradle.plugin)
+    alias(libs.plugins.sqldelight.plugin)
+    alias(libs.plugins.kotlin.serialization.plugin)
     id("com.google.gms.google-services")
     id("com.google.firebase.crashlytics")
-    id("com.google.devtools.ksp")
-    id("app.cash.sqldelight")
 }
 
 android {
-    namespace = appId
+    namespace = libs.versions.appId.get()
 
-    compileSdk = 34
+    compileSdk = libs.versions.sdk.get().toInt()
 
     defaultConfig {
-        applicationId = appId
-        minSdk = 26
-        targetSdk = 34
+        applicationId = libs.versions.appId.get()
+        minSdk = libs.versions.min.sdk.get().toInt()
+        targetSdk = libs.versions.sdk.get().toInt()
         versionCode = datedVersionCode
-        versionName = wirelessValVersion
+        versionName = libs.versions.versionName.get()
 
         vectorDrawables.useSupportLibrary = true
     }
@@ -67,25 +61,22 @@ android {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
-
     kotlinOptions {
         jvmTarget = "17"
     }
 
     buildFeatures {
         compose = true
+        buildConfig = true
     }
-
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.2"
+        kotlinCompilerExtensionVersion = libs.versions.compose.compiler.get()
     }
-
     packaging {
         resources {
             excludes += listOf("/META-INF/{AL2.0,LGPL2.1}", "AndroidManifest.xml")
         }
     }
-
     secrets {
         propertiesFileName = "secrets.properties"
         defaultPropertiesFileName = "secrets.defaults.properties"
@@ -103,52 +94,45 @@ sqldelight {
 
 dependencies {
 
-    implementation("androidx.core:core-ktx:1.12.0")
+    implementation(libs.androidx.core.ktx)
 
-    implementation(platform("androidx.compose:compose-bom:2023.10.01"))
-    implementation("androidx.activity:activity-compose")
-    implementation("androidx.compose.ui:ui-tooling")
-    implementation("androidx.compose.material3:material3")
-    implementation("androidx.compose.material:material-icons-extended")
-    implementation("androidx.activity:activity-compose")
-    debugImplementation("androidx.compose.ui:ui-tooling")
-    debugImplementation("androidx.compose.ui:ui-test-manifest")
+    implementation(platform(libs.compose.bom))
+    implementation(libs.activity.compose)
+    implementation(libs.compose.ui.tooling)
+    implementation(libs.compose.material3)
+    implementation(libs.compose.icons.extended)
+    implementation(libs.compose.nav)
 
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2")
+    implementation(libs.androidx.lifecycle)
 
-    implementation("com.google.dagger:hilt-android:2.48")
-    ksp("com.google.dagger:hilt-compiler:2.48")
-    implementation("androidx.hilt:hilt-navigation-compose:1.1.0")
+    implementation(libs.accompanist.permissions)
 
-    implementation("com.google.accompanist:accompanist-permissions:0.23.1")
+    implementation(libs.androidx.preference)
 
-    implementation("androidx.preference:preference-ktx:1.2.1")
-
-    implementation("com.google.maps.android:maps-compose:2.14.1")
-    implementation("com.google.maps.android:maps-compose-widgets:2.14.1")
-    implementation("com.google.maps.android:android-maps-utils:3.5.3")
-    implementation("com.google.android.gms:play-services-maps:18.2.0")
-    implementation("com.google.android.gms:play-services-location:21.0.1")
+    implementation(libs.maps.compose)
+    implementation(libs.maps.compose.widgets)
+    implementation(libs.android.maps.utils)
+    implementation(libs.play.services.maps)
+    implementation(libs.play.services.location)
 
     // Serialization
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1")
+    implementation(libs.kotlin.serialization.json)
 
     // SQLDELIGHT
-    implementation("app.cash.sqldelight:android-driver:2.0.0")
+    implementation(libs.sqldelight.android.driver)
 
     // KTOR
-    implementation("io.ktor:ktor-client-core:2.3.6")
-    implementation("io.ktor:ktor-client-android:2.3.6")
-    implementation("io.ktor:ktor-client-serialization:2.3.6")
-    implementation("io.ktor:ktor-client-logging:2.3.6")
-    implementation("io.ktor:ktor-serialization-kotlinx-json:2.3.6")
-    implementation("io.ktor:ktor-client-content-negotiation:2.3.6")
-    implementation("io.ktor:ktor-client-okhttp:2.3.6")
+    implementation(libs.ktor.core)
+    implementation(libs.ktor.android.client)
+    implementation(libs.ktor.serialization)
+    implementation(libs.ktor.logging)
+    implementation(libs.ktor.serialization.json)
+    implementation(libs.ktor.content.negotiation)
+    implementation(libs.ktor.client.okhttp)
 
-    debugImplementation("com.github.chuckerteam.chucker:library:3.5.2")
-    releaseImplementation("com.github.chuckerteam.chucker:library-no-op:3.5.2")
+    debugImplementation(libs.chucker)
 
-    implementation(platform("com.google.firebase:firebase-bom:32.5.0"))
-    implementation("com.google.firebase:firebase-crashlytics-ktx")
-    implementation("com.google.firebase:firebase-analytics-ktx")
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.analytics)
+    implementation(libs.firebase.crashlytics)
 }
