@@ -93,9 +93,9 @@ sqldelight {
 }
 
 dependencies {
+    implementation (projects.shared)
 
     implementation(libs.androidx.core.ktx)
-
     implementation(platform(libs.compose.bom))
     implementation(libs.activity.compose)
     implementation(libs.compose.ui.tooling)

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "312929398823",
+    "project_id": "wireless-val",
+    "storage_bucket": "wireless-val.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:312929398823:android:ec49b3eaaf03df19cc5e02",
+        "android_client_info": {
+          "package_name": "eu.javimar.wirelessval"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBKlWDgmXa3HcFuZTFdth3bYNxw87q0bhI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
