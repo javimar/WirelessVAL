@@ -12,6 +12,7 @@ plugins {
     alias(libs.plugins.kotlinAndroid) apply false
     alias(libs.plugins.kotlin.serialization.plugin) apply false
     alias(libs.plugins.secrets.gradle.plugin) apply false
+    alias(libs.plugins.kotlinMultiplatform) apply false
 }
 
 tasks.register("clean", Delete::class) {

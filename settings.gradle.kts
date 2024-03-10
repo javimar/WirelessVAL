@@ -13,5 +13,6 @@ dependencyResolutionManagement {
     }
 }
 
-include(":app")
+include(":androidApp")
 rootProject.name ="WirelessVAL"
+include(":shared")
