@@ -58,7 +58,11 @@ class WifiLocalDataSource (db: WirelessVALDatabase): IWifiLocalRepository {
         queries.deleteWifi(name, gps.longitude, gps.latitude)
     }
 
-    override suspend fun deleteAllWifis() = queries.deleteAllWifis()
+    // SQLDelight 2.3.2 devuelve QueryResult<Long> (filas afectadas) donde 2.0.0 exponia
+    // Unit; el contrato de IWifiLocalRepository sigue en Unit, se descarta el valor.
+    override suspend fun deleteAllWifis() {
+        queries.deleteAllWifis()
+    }
 
     override suspend fun getSearchResults(query: String): List<WifiBO> {
         return queries.getSearchResults(query).executeAsList().toWifiBOList()

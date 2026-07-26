@@ -1,6 +1,6 @@
-import com.google.firebase.crashlytics.buildtools.gradle.CrashlyticsExtension
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
+import java.util.Properties
 
 fun generateVersionCode(): Int {
     val formatter = DateTimeFormatter.ofPattern("yyMMddHH")
@@ -10,14 +10,29 @@ fun generateVersionCode(): Int {
 
 val datedVersionCode: Int = generateVersionCode()
 
+/**
+ * Secreto local (API key de Maps), leido a mano de secrets.properties. El
+ * secrets-gradle-plugin esta muerto (sin release desde feb-2022, issue #41 abierto) y bajo
+ * AGP 9 deja el marcador del manifest vacio en silencio. Mismo patron que Swim-Manager.
+ * secrets.properties esta gitignoreado; secrets.defaults.properties SI va a git.
+ */
+fun loadSecret(key: String): String {
+    val secretsFile = rootProject.file("secrets.properties")
+    val defaultsFile = rootProject.file("secrets.defaults.properties")
+    val propertiesFile = if (secretsFile.exists()) secretsFile
+        else if (defaultsFile.exists()) defaultsFile
+        else return ""
+
+    val properties = Properties()
+    propertiesFile.inputStream().use { properties.load(it) }
+    return properties.getProperty(key, "")
+}
+
 plugins {
     alias(libs.plugins.androidApplication)
-    alias(libs.plugins.kotlinAndroid)
-    alias(libs.plugins.secrets.gradle.plugin)
     alias(libs.plugins.sqldelight.plugin)
     alias(libs.plugins.kotlin.serialization.plugin)
-    id("com.google.gms.google-services")
-    id("com.google.firebase.crashlytics")
+    alias(libs.plugins.kotlin.compose.plugin)
 }
 
 android {
@@ -33,16 +48,12 @@ android {
         versionName = libs.versions.versionName.get()
 
         vectorDrawables.useSupportLibrary = true
+
+        manifestPlaceholders["API_KEY"] = loadSecret("API_KEY")
     }
 
     buildTypes {
         getByName("debug") {
-            buildConfigField("boolean", "ENABLE_CRASHLYTICS", "false")
-
-            // Disable Crashlytics upload for the debug build
-            configure<CrashlyticsExtension> {
-                mappingFileUploadEnabled = false // to disable mapping file uploads (default=true if minifying)
-            }
             isMinifyEnabled = false
             isShrinkResources = false
 
@@ -51,7 +62,7 @@ android {
         getByName("release") {
             isMinifyEnabled = true
             isShrinkResources = true
-            setProguardFiles(listOf(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"))
+            setProguardFiles(listOf(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"))
 
             buildConfigField("Long", "BASE_API_TIMEOUT", "10L")
         }
@@ -61,25 +72,21 @@ android {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
-    kotlinOptions {
-        jvmTarget = "17"
-    }
 
     buildFeatures {
         compose = true
         buildConfig = true
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion = libs.versions.compose.compiler.get()
     }
     packaging {
         resources {
             excludes += listOf("/META-INF/{AL2.0,LGPL2.1}", "AndroidManifest.xml")
         }
     }
-    secrets {
-        propertiesFileName = "secrets.properties"
-        defaultPropertiesFileName = "secrets.defaults.properties"
+}
+
+kotlin {
+    compilerOptions {
+        jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17)
     }
 }
 
@@ -98,7 +105,10 @@ dependencies {
 
     implementation(platform(libs.compose.bom))
     implementation(libs.activity.compose)
-    implementation(libs.compose.ui.tooling)
+    // @Preview vive en ui-tooling-preview y lo usan 21 ficheros de src/main: hace falta en
+    // TODOS los build types. El visor de previews (ui-tooling) solo hace falta en debug.
+    implementation(libs.compose.ui.tooling.preview)
+    debugImplementation(libs.compose.ui.tooling)
     implementation(libs.compose.material3)
     implementation(libs.compose.icons.extended)
     implementation(libs.compose.nav)
@@ -131,8 +141,8 @@ dependencies {
     implementation(libs.ktor.client.okhttp)
 
     debugImplementation(libs.chucker)
-
-    implementation(platform(libs.firebase.bom))
-    implementation(libs.firebase.analytics)
-    implementation(libs.firebase.crashlytics)
+    // Patron oficial de Chucker, el mismo que My-Fallas-Guide: en release entra el
+    // artefacto no-op, con la misma API pero vacia. Asi el codigo vive en src/main sin
+    // partir source sets, y en produccion no se registra ni una peticion.
+    releaseImplementation(libs.chucker.no.op)
 }
