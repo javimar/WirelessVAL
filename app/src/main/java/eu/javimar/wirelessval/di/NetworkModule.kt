@@ -19,7 +19,10 @@ import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
 import java.util.concurrent.TimeUnit
 
-private const val BASE_URL = "https://valencia.opendatasoft.com/"
+// El portal de datos abiertos de Valencia migró de OpenDataSoft (valencia.opendatasoft.com,
+// ahora muerto, HTTP 404) a un servicio ArcGIS REST (geoportal.valencia.es). Capa 200 =
+// "Punts Wifi / Puntos Wifi". Mismo servidor que usa My-Fallas-Guide (capa 215).
+private const val BASE_URL = "https://geoportal.valencia.es/server/rest/services/OPENDATA/Turismo/MapServer/200/"
 
 interface INetworkModule {
     val networkClient: HttpClient

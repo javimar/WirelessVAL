@@ -5,5 +5,5 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class WifisDto(
-    @SerialName(value = "results") var results: List<WifiDto>?
+    @SerialName(value = "features") var features: List<WifiDto>?
 )

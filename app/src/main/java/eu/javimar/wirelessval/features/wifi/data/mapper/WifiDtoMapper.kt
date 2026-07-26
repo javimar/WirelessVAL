@@ -12,7 +12,7 @@ fun List<WifiDto>?.toWifiBOList(): List<WifiBO> =
 
 fun WifiDto.toWifiBO(): WifiBO {
     return WifiBO(
-        wifiName = removePrefix(wifiName),
+        wifiName = removePrefix(attributes?.wifiName),
         coordinates = geoPoint.toGeoPoint(),
         comments = "",
         opinion = 0.0
